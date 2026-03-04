@@ -26,7 +26,7 @@ export default function Experience() {
             className="bg-[var(--background-card)] border-l-4 border-[var(--primary-yellow)] p-10 md:p-12 rounded-r-2xl shadow-lg"
           >
             <p
-              className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-2xl md:text-3xl leading-relaxed"
+              className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-2xl md:text-3xl leading-relaxed text-center"
               style={{ fontFamily: "var(--font-jakarta)" }}
             >
               The platform is designed to provide a{" "}
@@ -50,7 +50,7 @@ export default function Experience() {
             className="bg-[var(--background-card)] border-l-4 border-[var(--primary-yellow)] p-10 md:p-12 rounded-r-2xl shadow-lg"
           >
             <p
-              className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-2xl md:text-3xl leading-relaxed"
+              className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-2xl md:text-3xl leading-relaxed text-center"
               style={{ fontFamily: "var(--font-jakarta)" }}
             >
               Users would encounter an intuitive and motivating environment that
