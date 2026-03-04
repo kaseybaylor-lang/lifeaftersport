@@ -49,7 +49,7 @@ export default function Opportunity() {
           <SectionHeading>OPPORTUNITY</SectionHeading>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center mt-16">
+        <div className="grid lg:grid-cols-2 gap-20 items-center mt-20">
           {/* Left Side - Mockup Placeholder */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -107,7 +107,7 @@ export default function Opportunity() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="space-y-8"
+            className="space-y-10"
           >
             <p
               className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-xl md:text-2xl leading-relaxed"
@@ -125,7 +125,7 @@ export default function Opportunity() {
                 Life After Sport creates value by:
               </h3>
 
-              <div className="space-y-5">
+              <div className="space-y-6">
                 {valueProps.map((prop, index) => (
                   <motion.div
                     key={index}

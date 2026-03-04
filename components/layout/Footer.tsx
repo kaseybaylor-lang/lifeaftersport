@@ -7,12 +7,6 @@ const quickLinks = [
   { name: "Pricing", href: "#pricing" },
 ];
 
-const domainIdeas = [
-  "LifeAfterSport.com",
-  "NextPlay.com",
-  "BeyondtheSport.com",
-];
-
 export default function Footer() {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -28,7 +22,7 @@ export default function Footer() {
   return (
     <footer className="bg-[var(--background-card)] border-t border-[var(--text-secondary)]/20">
       <div className="container mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 gap-12 mb-12">
           {/* Left - Logo & Tagline */}
           <div>
             <button
@@ -53,7 +47,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Center - Quick Links */}
+          {/* Right - Quick Links */}
           <div>
             <h3
               className="font-[family-name:var(--font-oswald)] font-[700] text-[var(--text-primary)] uppercase text-lg mb-4"
@@ -74,22 +68,6 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Right - Domain Ideas */}
-          <div>
-            <h3
-              className="font-[family-name:var(--font-oswald)] font-[700] text-[var(--text-primary)] uppercase text-lg mb-4"
-              style={{ fontFamily: "var(--font-oswald)" }}
-            >
-              Potential Domains
-            </h3>
-            <p
-              className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] text-sm leading-relaxed"
-              style={{ fontFamily: "var(--font-jakarta)" }}
-            >
-              {domainIdeas.join(" · ")}
-            </p>
           </div>
         </div>
 

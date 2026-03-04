@@ -17,23 +17,6 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Main Content */}
           <div className="space-y-8">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-block"
-            >
-              <div className="border-2 border-[var(--primary-yellow)] rounded-full px-6 py-2 inline-block">
-                <span
-                  className="font-[family-name:var(--font-jakarta)] text-[var(--primary-yellow)] text-sm uppercase tracking-wide"
-                  style={{ fontFamily: "var(--font-jakarta)" }}
-                >
-                  Internet Business Applications
-                </span>
-              </div>
-            </motion.div>
-
             {/* Main Headline - Staggered Animation */}
             <div className="space-y-2">
               {["LIFE", "AFTER", "SPORT."].map((word, index) => (

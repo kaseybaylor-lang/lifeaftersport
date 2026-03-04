@@ -40,7 +40,7 @@ export default function Problem() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-xl md:text-2xl max-w-4xl mx-auto mt-8 leading-relaxed text-center"
+          className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-xl md:text-2xl max-w-4xl mx-auto mt-16 leading-relaxed text-center"
           style={{ fontFamily: "var(--font-jakarta)" }}
         >
           Student-athletes spend years optimizing for performance rather than
@@ -48,7 +48,7 @@ export default function Problem() {
         </motion.p>
 
         {/* Pain Points Grid */}
-        <div className="grid md:grid-cols-2 gap-6 mt-16 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 mt-24 max-w-6xl mx-auto">
           {painPoints.map((point, index) => (
             <motion.div
               key={index}
@@ -81,7 +81,7 @@ export default function Problem() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="mt-16 max-w-4xl mx-auto"
+          className="mt-24 max-w-4xl mx-auto"
         >
           <div className="bg-gradient-to-r from-[var(--primary-yellow)]/10 to-transparent border-l-4 border-[var(--primary-yellow)] p-8 rounded-r-lg">
             <p

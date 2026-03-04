@@ -16,7 +16,7 @@ export default function Experience() {
           <SectionHeading>EXPERIENCE PROVIDED</SectionHeading>
         </motion.div>
 
-        <div className="space-y-12 mt-16 max-w-5xl mx-auto">
+        <div className="space-y-16 mt-20 max-w-5xl mx-auto">
           {/* First Feature Card */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -72,7 +72,7 @@ export default function Experience() {
           whileInView={{ opacity: 1, scaleX: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="max-w-3xl mx-auto mt-20"
+          className="max-w-3xl mx-auto mt-24"
         >
           <div className="h-1 bg-gradient-to-r from-transparent via-[var(--primary-yellow)] to-transparent rounded-full" />
         </motion.div>

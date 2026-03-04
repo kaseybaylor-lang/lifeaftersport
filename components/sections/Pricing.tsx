@@ -51,7 +51,7 @@ export default function Pricing() {
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mt-16 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-10 mt-20 max-w-7xl mx-auto">
           {pricingTiers.map((tier, index) => (
             <motion.div
               key={index}
@@ -79,7 +79,7 @@ export default function Pricing() {
 
               {/* Pricing Card */}
               <div
-                className={`bg-[var(--background-card)] rounded-2xl p-8 h-full flex flex-col transition-all duration-300 ${
+                className={`bg-[var(--background-card)] rounded-2xl p-10 h-full flex flex-col transition-all duration-300 ${
                   tier.featured
                     ? "border-2 border-[var(--primary-yellow)] shadow-2xl shadow-[var(--primary-yellow)]/20"
                     : "border border-[var(--text-secondary)]/20 hover:border-[var(--primary-yellow)]/40"
@@ -164,7 +164,7 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-16"
+          className="text-center mt-20"
         >
           <p
             className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] text-sm"

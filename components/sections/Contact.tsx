@@ -21,7 +21,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 space-y-6"
+            className="mt-16 space-y-8"
           >
             <p
               className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-xl"

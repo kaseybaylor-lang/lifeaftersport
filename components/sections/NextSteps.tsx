@@ -56,7 +56,7 @@ export default function NextSteps() {
         </motion.div>
 
         {/* Timeline */}
-        <div className="mt-16 max-w-6xl mx-auto">
+        <div className="mt-20 max-w-6xl mx-auto">
           <div className="relative">
             {/* Connector Line */}
             <div className="hidden md:block absolute top-16 left-0 right-0 h-1 bg-[var(--text-secondary)]/20">
@@ -70,7 +70,7 @@ export default function NextSteps() {
             </div>
 
             {/* Phases */}
-            <div className="grid md:grid-cols-3 gap-8 relative">
+            <div className="grid md:grid-cols-3 gap-12 relative">
               {phases.map((phase, index) => (
                 <motion.div
                   key={index}
@@ -91,7 +91,7 @@ export default function NextSteps() {
                   </div>
 
                   {/* Phase Content */}
-                  <div className="bg-[var(--background-card)] border border-[var(--text-secondary)]/20 rounded-xl p-6 w-full hover:border-[var(--primary-yellow)]/40 transition-all duration-300">
+                  <div className="bg-[var(--background-card)] border border-[var(--text-secondary)]/20 rounded-xl p-8 w-full hover:border-[var(--primary-yellow)]/40 transition-all duration-300">
                     <h3
                       className="font-[family-name:var(--font-oswald)] font-[700] text-[var(--primary-yellow)] text-2xl uppercase mb-4 text-center"
                       style={{ fontFamily: "var(--font-oswald)" }}
