@@ -75,7 +75,7 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-12 lg:px-16 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <button

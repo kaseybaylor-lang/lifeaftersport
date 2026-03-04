@@ -21,7 +21,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[var(--background-card)] border-t border-[var(--text-secondary)]/20">
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-12 lg:px-16 py-16">
         <div className="grid md:grid-cols-2 gap-12 mb-12">
           {/* Left - Logo & Tagline */}
           <div>

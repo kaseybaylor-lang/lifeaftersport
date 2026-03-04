@@ -6,7 +6,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 export default function Experience() {
   return (
     <section id="experience" className="min-h-screen grid-texture py-32">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-12 lg:px-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
