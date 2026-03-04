@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors */
+  --primary-yellow: #E8E000;
+  --background-dark: #0D1117;
+  --background-card: #141B22;
+  --grid-overlay: rgba(232, 224, 0, 0.06);
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --accent-blue: #00AAFF;
+}
+
+@theme inline {
+  --color-primary: var(--primary-yellow);
+  --color-background-dark: var(--background-dark);
+  --color-background-card: var(--background-card);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent-blue: var(--accent-blue);
+
+  --font-heading: var(--font-oswald);
+  --font-body: var(--font-jakarta);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background-dark);
+  color: var(--text-primary);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Grid Texture Overlay */
+.grid-texture {
+  position: relative;
+}
+
+.grid-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      var(--grid-overlay),
+      var(--grid-overlay) 1px,
+      transparent 1px,
+      transparent 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      var(--grid-overlay),
+      var(--grid-overlay) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grid-texture > * {
+  position: relative;
+  z-index: 1;
+}
