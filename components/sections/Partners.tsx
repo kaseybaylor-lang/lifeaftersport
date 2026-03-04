@@ -79,7 +79,7 @@ export default function Partners() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-xl md:text-2xl max-w-4xl mt-8"
+          className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-xl md:text-2xl max-w-4xl mx-auto mt-12 mb-16 text-center leading-relaxed"
           style={{ fontFamily: "var(--font-jakarta)" }}
         >
           Life After Sport embeds within the current student-athlete and campus
@@ -87,7 +87,7 @@ export default function Partners() {
         </motion.p>
 
         {/* Partner Cards Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 max-w-7xl">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {partners.map((partner, index) => (
             <motion.div
               key={index}
@@ -98,14 +98,14 @@ export default function Partners() {
               className="group"
             >
               <div
-                className={`bg-[var(--background-card)] border-2 rounded-xl p-8 h-full transition-all duration-300 ${
+                className={`bg-[var(--background-card)] border-2 rounded-xl p-8 md:p-10 h-full transition-all duration-300 flex flex-col ${
                   partner.isNCAA
                     ? "border-[var(--accent-blue)]/40 hover:border-[var(--accent-blue)] hover:shadow-lg hover:shadow-[var(--accent-blue)]/20"
                     : "border-[var(--text-secondary)]/20 hover:border-[var(--primary-yellow)]/40 hover:shadow-lg hover:shadow-[var(--primary-yellow)]/10"
                 } hover:-translate-y-1`}
               >
                 <h3
-                  className={`font-[family-name:var(--font-oswald)] font-[700] text-2xl uppercase mb-4 ${
+                  className={`font-[family-name:var(--font-oswald)] font-[700] text-2xl uppercase mb-6 ${
                     partner.isNCAA
                       ? "text-[var(--accent-blue)]"
                       : "text-[var(--primary-yellow)]"
@@ -115,7 +115,7 @@ export default function Partners() {
                   {partner.title}
                 </h3>
                 <p
-                  className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-base leading-relaxed"
+                  className="font-[family-name:var(--font-jakarta)] text-[var(--text-primary)] text-base md:text-lg leading-relaxed"
                   style={{ fontFamily: "var(--font-jakarta)" }}
                 >
                   {partner.description}
@@ -123,7 +123,7 @@ export default function Partners() {
 
                 {/* Visual accent for NCAA card */}
                 {partner.isNCAA && (
-                  <div className="mt-4 pt-4 border-t border-[var(--accent-blue)]/30">
+                  <div className="mt-auto pt-6 border-t border-[var(--accent-blue)]/30">
                     <span
                       className="font-[family-name:var(--font-jakarta)] text-[var(--accent-blue)] text-sm uppercase tracking-wide font-[600]"
                       style={{ fontFamily: "var(--font-jakarta)" }}
