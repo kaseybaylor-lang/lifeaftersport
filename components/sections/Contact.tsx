@@ -6,7 +6,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 export default function Contact() {
   return (
     <section id="contact" className="py-32 bg-[var(--background-card)]">
-      <div className="container mx-auto px-12 lg:px-16">
+      <div className="content-container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

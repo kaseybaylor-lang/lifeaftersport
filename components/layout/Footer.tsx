@@ -21,8 +21,9 @@ export default function Footer() {
 
   return (
     <footer className="bg-[var(--background-card)] border-t border-[var(--text-secondary)]/20">
-      <div className="container mx-auto px-12 lg:px-16 py-16">
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
+      <div className="content-container py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 mb-12">
           {/* Left - Logo & Tagline */}
           <div>
             <button
@@ -69,16 +70,17 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-        </div>
+          </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-[var(--text-secondary)]/20">
-          <p
-            className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] text-sm text-center"
-            style={{ fontFamily: "var(--font-jakarta)" }}
-          >
-            © 2025 Life After Sport. Built by Kasey, Ella & Kenny.
-          </p>
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-[var(--text-secondary)]/20">
+            <p
+              className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] text-sm text-center"
+              style={{ fontFamily: "var(--font-jakarta)" }}
+            >
+              © 2025 Life After Sport. Built by Kasey, Ella & Kenny.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -13,7 +13,7 @@ export default function Hero() {
 
   return (
     <section className="min-h-screen grid-texture flex items-center relative overflow-hidden">
-      <div className="container mx-auto px-12 lg:px-16 py-32">
+      <div className="content-container py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Main Content */}
           <div className="space-y-8">

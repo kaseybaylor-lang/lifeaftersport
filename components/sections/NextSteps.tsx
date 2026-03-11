@@ -45,7 +45,7 @@ export default function NextSteps() {
 
   return (
     <section id="next-steps" className="min-h-screen grid-texture py-32">
-      <div className="container mx-auto px-12 lg:px-16">
+      <div className="content-container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,9 +125,9 @@ export default function NextSteps() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-24 max-w-3xl mx-auto"
+          className="mt-40 flex justify-center"
         >
-          <div className="bg-gradient-to-br from-[var(--background-card)] to-[var(--background-dark)] border-2 border-[var(--primary-yellow)] rounded-2xl p-12 shadow-2xl shadow-[var(--primary-yellow)]/20 text-center">
+          <div className="w-full max-w-3xl bg-gradient-to-br from-[var(--background-card)] to-[var(--background-dark)] border-2 border-[var(--primary-yellow)] rounded-2xl p-12 shadow-2xl shadow-[var(--primary-yellow)]/20 text-center">
             <h3
               className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--primary-yellow)] text-4xl md:text-5xl uppercase mb-6"
               style={{ fontFamily: "var(--font-oswald)" }}
