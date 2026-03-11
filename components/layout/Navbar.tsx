@@ -114,12 +114,21 @@ export default function Navbar() {
                 </button>
               ))}
               {user ? (
-                <div className="flex items-center gap-4 ml-4">
-                  <Button variant="outline" href="/quiz">
-                    Career Quiz
+                <div className="flex items-center gap-3 ml-4">
+                  <Button variant="outline" href="/jobs">
+                    Jobs
                   </Button>
-                  <span className="text-[var(--text-primary)]">
-                    Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
+                  <Button variant="outline" href="/mentors">
+                    Mentors
+                  </Button>
+                  <Button variant="outline" href="/messages">
+                    Messages
+                  </Button>
+                  <Button variant="outline" href="/quiz">
+                    Quiz
+                  </Button>
+                  <span className="text-[var(--text-primary)] text-sm">
+                    <span className="text-[var(--neon-yellow)] font-bold">{user.name.split(' ')[0]}</span>
                   </span>
                   <Button
                     variant="outline"
@@ -213,10 +222,19 @@ export default function Navbar() {
                 </div>
 
                 {user ? (
-                  <div className="space-y-4">
-                    <p className="text-[var(--text-primary)] text-center">
+                  <div className="space-y-3">
+                    <p className="text-[var(--text-primary)] text-center mb-2">
                       Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
                     </p>
+                    <Button variant="outline" href="/jobs" className="w-full">
+                      Jobs
+                    </Button>
+                    <Button variant="outline" href="/mentors" className="w-full">
+                      Mentors
+                    </Button>
+                    <Button variant="outline" href="/messages" className="w-full">
+                      Messages
+                    </Button>
                     <Button variant="primary" href="/quiz" className="w-full">
                       Career Quiz
                     </Button>
