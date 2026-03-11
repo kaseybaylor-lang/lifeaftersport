@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
+import Button from "@/components/ui/Button";
+import { useAuth } from "@/contexts/AuthContext";
 
 const stats = [
   {
@@ -19,6 +21,8 @@ const stats = [
 ];
 
 export default function WhyLifeAfterSport() {
+  const { user } = useAuth();
+
   return (
     <section className="py-32 bg-[var(--dark-navy)]" id="why">
       <div className="content-container">
@@ -36,7 +40,7 @@ export default function WhyLifeAfterSport() {
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -55,6 +59,22 @@ export default function WhyLifeAfterSport() {
             </motion.div>
           ))}
         </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center"
+        >
+          <p className="text-lg text-[var(--text-secondary)] mb-6">
+            Ready to discover your career path?
+          </p>
+          <Button variant="primary" href={user ? "/quiz" : "/register"}>
+            {user ? "Take the Career Quiz" : "Get Started"}
+          </Button>
+        </motion.div>
       </div>
     </section>
   );

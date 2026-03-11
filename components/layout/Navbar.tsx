@@ -115,6 +115,9 @@ export default function Navbar() {
               ))}
               {user ? (
                 <div className="flex items-center gap-4 ml-4">
+                  <Button variant="outline" href="/quiz">
+                    Career Quiz
+                  </Button>
                   <span className="text-[var(--text-primary)]">
                     Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
                   </span>
@@ -214,6 +217,9 @@ export default function Navbar() {
                     <p className="text-[var(--text-primary)] text-center">
                       Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
                     </p>
+                    <Button variant="primary" href="/quiz" className="w-full">
+                      Career Quiz
+                    </Button>
                     <Button
                       variant="outline"
                       className="w-full"
