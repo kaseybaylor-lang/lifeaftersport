@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const navLinks = [
   { name: "Why Life After Sport", href: "#why" },
@@ -78,17 +79,14 @@ export default function Navbar() {
         <div className="content-container py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center gap-2 group"
-            >
+            <Link href={user ? "/dashboard" : "/"}>
               <span
-                className="font-[family-name:var(--font-oswald)] font-bold text-[var(--neon-yellow)] uppercase text-xl tracking-tight"
+                className="font-[family-name:var(--font-oswald)] font-bold text-[var(--neon-yellow)] uppercase text-xl tracking-tight cursor-pointer"
                 style={{ fontFamily: "var(--font-oswald)" }}
               >
                 LIFE AFTER SPORT
               </span>
-            </button>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8">
@@ -115,14 +113,14 @@ export default function Navbar() {
               ))}
               {user ? (
                 <div className="flex items-center gap-3 ml-4">
+                  <Button variant="outline" href="/dashboard">
+                    Dashboard
+                  </Button>
                   <Button variant="outline" href="/jobs">
                     Jobs
                   </Button>
                   <Button variant="outline" href="/mentors">
                     Mentors
-                  </Button>
-                  <Button variant="outline" href="/messages">
-                    Messages
                   </Button>
                   <Button variant="outline" href="/quiz">
                     Quiz
@@ -226,6 +224,9 @@ export default function Navbar() {
                     <p className="text-[var(--text-primary)] text-center mb-2">
                       Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
                     </p>
+                    <Button variant="primary" href="/dashboard" className="w-full">
+                      Dashboard
+                    </Button>
                     <Button variant="outline" href="/jobs" className="w-full">
                       Jobs
                     </Button>
@@ -235,7 +236,7 @@ export default function Navbar() {
                     <Button variant="outline" href="/messages" className="w-full">
                       Messages
                     </Button>
-                    <Button variant="primary" href="/quiz" className="w-full">
+                    <Button variant="outline" href="/quiz" className="w-full">
                       Career Quiz
                     </Button>
                     <Button
