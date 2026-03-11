@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Oswald, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const oswald = Oswald({
   variable: "--font-oswald",
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${oswald.variable} ${jakarta.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -3,19 +3,19 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
-  { name: "Problem", href: "#problem" },
-  { name: "Solution", href: "#solution" },
-  { name: "Partners", href: "#partners" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "Contact", href: "#contact" },
+  { name: "Why Life After Sport", href: "#why" },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const { user, signOut } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,14 +82,11 @@ export default function Navbar() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="flex items-center gap-2 group"
             >
-              <span className="text-[var(--primary-yellow)] text-2xl group-hover:scale-110 transition-transform">
-                ⟡
-              </span>
               <span
-                className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--primary-yellow)] uppercase text-xl tracking-tight"
+                className="font-[family-name:var(--font-oswald)] font-bold text-[var(--neon-yellow)] uppercase text-xl tracking-tight"
                 style={{ fontFamily: "var(--font-oswald)" }}
               >
-                Life After Sport
+                LIFE AFTER SPORT
               </span>
             </button>
 
@@ -101,8 +98,8 @@ export default function Navbar() {
                   onClick={() => scrollToSection(link.href)}
                   className={`font-[family-name:var(--font-jakarta)] transition-colors duration-200 relative ${
                     activeSection === link.href
-                      ? "text-[var(--primary-yellow)]"
-                      : "text-[var(--text-primary)] hover:text-[var(--primary-yellow)]"
+                      ? "text-[var(--neon-yellow)]"
+                      : "text-[var(--text-primary)] hover:text-[var(--neon-yellow)]"
                   }`}
                   style={{ fontFamily: "var(--font-jakarta)" }}
                 >
@@ -110,20 +107,42 @@ export default function Navbar() {
                   {activeSection === link.href && (
                     <motion.div
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[var(--primary-yellow)]"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[var(--neon-yellow)]"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
                 </button>
               ))}
-              <Button variant="primary" className="ml-4">
-                Get Started
-              </Button>
+              {user ? (
+                <div className="flex items-center gap-4 ml-4">
+                  <span className="text-[var(--text-primary)]">
+                    Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
+                  </span>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      signOut();
+                      router.push('/');
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 ml-4">
+                  <Button variant="outline" href="/signin">
+                    Sign In
+                  </Button>
+                  <Button variant="primary" href="/register">
+                    Sign Up
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden text-[var(--primary-yellow)] text-3xl"
+              className="lg:hidden text-[var(--neon-yellow)] text-3xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -159,7 +178,7 @@ export default function Navbar() {
               <div className="flex flex-col h-full p-8 pt-20">
                 {/* Close button positioned */}
                 <button
-                  className="absolute top-6 right-6 text-[var(--primary-yellow)] text-3xl"
+                  className="absolute top-6 right-6 text-[var(--neon-yellow)] text-3xl"
                   onClick={() => setIsMobileMenuOpen(false)}
                   aria-label="Close menu"
                 >
@@ -174,8 +193,8 @@ export default function Navbar() {
                       onClick={() => scrollToSection(link.href)}
                       className={`font-[family-name:var(--font-oswald)] font-[600] uppercase text-2xl text-left transition-colors duration-200 ${
                         activeSection === link.href
-                          ? "text-[var(--primary-yellow)]"
-                          : "text-[var(--text-primary)] hover:text-[var(--primary-yellow)]"
+                          ? "text-[var(--neon-yellow)]"
+                          : "text-[var(--text-primary)] hover:text-[var(--neon-yellow)]"
                       }`}
                       style={{ fontFamily: "var(--font-oswald)" }}
                       initial={{ opacity: 0, x: 50 }}
@@ -190,9 +209,33 @@ export default function Navbar() {
                   ))}
                 </div>
 
-                <Button variant="primary" className="w-full">
-                  Get Started
-                </Button>
+                {user ? (
+                  <div className="space-y-4">
+                    <p className="text-[var(--text-primary)] text-center">
+                      Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
+                    </p>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => {
+                        signOut();
+                        router.push('/');
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <Button variant="outline" href="/signin" className="w-full">
+                      Sign In
+                    </Button>
+                    <Button variant="primary" href="/register" className="w-full">
+                      Sign Up
+                    </Button>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>

@@ -1,23 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Colors */
-  --primary-yellow: #E8E000;
-  --background-dark: #0D1117;
-  --background-card: #141B22;
-  --grid-overlay: rgba(232, 224, 0, 0.06);
+  /* Brand Colors - Life After Sport */
+  --neon-yellow: #e8ff00;
+  --black: #0a0a0a;
+  --dark-navy: #0d1b2a;
   --text-primary: #FFFFFF;
   --text-secondary: #A0A0A0;
-  --accent-blue: #00AAFF;
 }
 
 @theme inline {
-  --color-primary: var(--primary-yellow);
-  --color-background-dark: var(--background-dark);
-  --color-background-card: var(--background-card);
+  --color-neon-yellow: var(--neon-yellow);
+  --color-black: var(--black);
+  --color-dark-navy: var(--dark-navy);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
-  --color-accent-blue: var(--accent-blue);
 
   --font-heading: var(--font-oswald);
   --font-body: var(--font-jakarta);
@@ -34,7 +31,7 @@ html {
 }
 
 body {
-  background: var(--background-dark);
+  background: var(--black);
   color: var(--text-primary);
   font-family: var(--font-jakarta), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

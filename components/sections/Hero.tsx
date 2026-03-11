@@ -87,12 +87,11 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 1.3 }}
               className="flex flex-wrap gap-4"
             >
-              <Button variant="primary">Join the Waitlist</Button>
-              <Button
-                variant="outline"
-                onClick={() => scrollToSection("#problem")}
-              >
-                Learn More
+              <Button variant="primary" href="/register">
+                Sign Up
+              </Button>
+              <Button variant="outline" href="/signin">
+                Sign In
               </Button>
             </motion.div>
           </div>
