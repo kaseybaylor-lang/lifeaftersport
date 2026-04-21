@@ -5,6 +5,7 @@ export interface User {
   name: string;
   email: string;
   sport: string;
+  university: string;
   graduationYear: string;
   status: 'current-athlete' | 'recent-alum';
 }
@@ -20,6 +21,7 @@ export const auth = {
       name: userData.name,
       email: userData.email,
       sport: userData.sport,
+      university: userData.university,
       graduationYear: userData.graduationYear,
       status: userData.status,
     };

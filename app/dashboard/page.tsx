@@ -230,7 +230,7 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-heading font-bold text-white mb-6">
             Quick Actions
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
@@ -240,17 +240,17 @@ export default function DashboardPage() {
               >
                 <Link href={action.href}>
                   <div
-                    className={`h-full p-6 rounded-2xl border transition-all cursor-pointer ${
+                    className={`h-full p-8 rounded-2xl border transition-all cursor-pointer ${
                       action.variant === "primary"
                         ? "bg-[var(--neon-yellow)]/10 border-[var(--neon-yellow)] hover:bg-[var(--neon-yellow)]/20"
                         : "bg-[var(--dark-navy)]/50 border-[var(--neon-yellow)]/20 hover:border-[var(--neon-yellow)]/40"
                     }`}
                   >
-                    <div className="text-4xl mb-4">{action.icon}</div>
-                    <h3 className="text-xl font-heading font-bold text-white mb-2">
+                    <div className="text-5xl mb-4">{action.icon}</div>
+                    <h3 className="text-2xl font-heading font-bold text-white mb-2">
                       {action.title}
                     </h3>
-                    <p className="text-sm text-[var(--text-secondary)]">
+                    <p className="text-base text-[var(--text-secondary)]">
                       {action.description}
                     </p>
                   </div>

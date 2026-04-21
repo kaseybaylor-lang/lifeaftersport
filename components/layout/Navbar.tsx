@@ -16,7 +16,6 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
   const { user, signOut } = useAuth();
   const router = useRouter();
 
@@ -28,43 +27,6 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Intersection Observer for active section highlighting
-  useEffect(() => {
-    const sections = navLinks.map((link) => document.querySelector(link.href));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`);
-          }
-        });
-      },
-      {
-        threshold: 0.3,
-        rootMargin: "-100px 0px -60% 0px",
-      }
-    );
-
-    sections.forEach((section) => {
-      if (section) observer.observe(section);
-    });
-
-    return () => {
-      sections.forEach((section) => {
-        if (section) observer.unobserve(section);
-      });
-    };
-  }, []);
-
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
-  };
 
   return (
     <>

@@ -15,6 +15,7 @@ export default function RegisterPage() {
     email: "",
     password: "",
     sport: "",
+    university: "",
     graduationYear: "",
     status: "current-athlete" as "current-athlete" | "recent-alum",
   });
@@ -40,7 +41,7 @@ export default function RegisterPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-xl"
       >
         {/* Logo */}
         <div className="text-center mb-8">
@@ -54,45 +55,46 @@ export default function RegisterPage() {
 
         {/* Form Card */}
         <div className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/20 rounded-2xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name */}
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                placeholder="Enter your full name"
-              />
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Name & Email Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                  placeholder="Enter your full name"
+                />
+              </div>
 
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                placeholder="you@example.com"
-              />
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                  placeholder="you@example.com"
+                />
+              </div>
             </div>
 
             {/* Password */}
@@ -115,71 +117,95 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Sport */}
-            <div>
-              <label
-                htmlFor="sport"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-              >
-                Sport Played
-              </label>
-              <input
-                type="text"
-                id="sport"
-                name="sport"
-                value={formData.sport}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                placeholder="e.g., Basketball, Soccer, Track"
-              />
+            {/* Sport & University Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label
+                  htmlFor="sport"
+                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+                >
+                  Sport Played
+                </label>
+                <input
+                  type="text"
+                  id="sport"
+                  name="sport"
+                  value={formData.sport}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                  placeholder="e.g., Basketball, Soccer"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="university"
+                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+                >
+                  University
+                </label>
+                <input
+                  type="text"
+                  id="university"
+                  name="university"
+                  value={formData.university}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                  placeholder="e.g., UCLA, Ohio State"
+                />
+              </div>
             </div>
 
-            {/* Graduation Year */}
-            <div>
-              <label
-                htmlFor="graduationYear"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-              >
-                Graduation Year
-              </label>
-              <input
-                type="text"
-                id="graduationYear"
-                name="graduationYear"
-                value={formData.graduationYear}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                placeholder="e.g., 2025"
-              />
-            </div>
+            {/* Graduation Year & Status Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label
+                  htmlFor="graduationYear"
+                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+                >
+                  Graduation Year
+                </label>
+                <input
+                  type="text"
+                  id="graduationYear"
+                  name="graduationYear"
+                  value={formData.graduationYear}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                  placeholder="e.g., 2025"
+                />
+              </div>
 
-            {/* Status */}
-            <div>
-              <label
-                htmlFor="status"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-              >
-                Current Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-              >
-                <option value="current-athlete">Current Athlete</option>
-                <option value="recent-alum">Recent Alum</option>
-              </select>
+              <div>
+                <label
+                  htmlFor="status"
+                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+                >
+                  Current Status
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                >
+                  <option value="current-athlete">Current Athlete</option>
+                  <option value="recent-alum">Recent Alum</option>
+                </select>
+              </div>
             </div>
 
             {/* Submit Button */}
-            <Button variant="primary" className="w-full mt-6" type="submit">
-              Create Account
-            </Button>
+            <div className="pt-2">
+              <Button variant="primary" className="w-full" type="submit">
+                Create Account
+              </Button>
+            </div>
           </form>
 
           {/* Sign In Link */}
