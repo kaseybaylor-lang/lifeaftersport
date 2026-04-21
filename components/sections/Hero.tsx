@@ -11,7 +11,7 @@ export default function Hero() {
           {/* Left Column - Main Content */}
           <div className="space-y-12">
             {/* Main Headline - Staggered Animation */}
-            <div className="space-y-1">
+            <div className="space-y-1 pb-8">
               {["LIFE", "AFTER", "SPORT."].map((word, index) => (
                 <motion.h1
                   key={word}
