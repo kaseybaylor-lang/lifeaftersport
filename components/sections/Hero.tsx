@@ -20,7 +20,7 @@ export default function Hero() {
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 + index * 0.15 }}
-                  className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--primary-yellow)] uppercase text-7xl md:text-8xl lg:text-9xl leading-[1.05] tracking-[-0.02em]"
+                  className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--neon-yellow)] uppercase text-7xl md:text-8xl lg:text-9xl leading-[1.05] tracking-[-0.02em]"
                   style={{ fontFamily: "var(--font-oswald)" }}
                 >
                   {word}
@@ -55,7 +55,7 @@ export default function Hero() {
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="font-[family-name:var(--font-jakarta)] text-[var(--primary-yellow)] text-xl md:text-2xl italic"
+                  className="font-[family-name:var(--font-jakarta)] text-[var(--neon-yellow)] text-xl md:text-2xl italic"
                   style={{ fontFamily: "var(--font-jakarta)" }}
                 >
                   Your Next Play Starts Here.
@@ -103,7 +103,7 @@ export default function Hero() {
               className="relative aspect-square max-w-lg mx-auto"
             >
               {/* Abstract visual placeholder */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[var(--primary-yellow)]/10 to-[var(--accent-blue)]/10 blur-3xl" />
+              <div               className="absolute inset-0 rounded-full bg-gradient-to-br from-[var(--neon-yellow)]/10 to-[var(--dark-navy)]/10 blur-3xl" />
               <div className="relative h-full flex items-center justify-center">
                 <motion.div
                   animate={{ rotate: 360 }}
