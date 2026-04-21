@@ -24,9 +24,9 @@ export default function WhyLifeAfterSport() {
   const { user } = useAuth();
 
   return (
-    <section className="py-32 md:py-48 bg-[var(--dark-navy)] w-full" id="why">
+    <section className="py-48 md:py-64 bg-[var(--dark-navy)] w-full" id="why">
       <div className="content-container">
-        <div className="text-center mb-16 md:mb-24">
+        <div className="text-center mb-24 md:mb-32">
           <SectionHeading>Why Life After Sport?</SectionHeading>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -40,7 +40,7 @@ export default function WhyLifeAfterSport() {
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-10 mb-20 md:mb-24">
+        <div className="grid md:grid-cols-3 gap-10 md:gap-14 mb-28 md:mb-32">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -48,7 +48,7 @@ export default function WhyLifeAfterSport() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-[var(--black)] border border-[var(--neon-yellow)]/20 rounded-2xl p-10 md:p-12 text-center hover:border-[var(--neon-yellow)]/40 transition-all duration-300"
+              className="bg-[var(--black)] border border-[var(--neon-yellow)]/20 rounded-2xl p-12 md:p-16 text-center hover:border-[var(--neon-yellow)]/40 transition-all duration-300"
             >
               <div className="text-6xl md:text-7xl font-heading font-bold text-[var(--neon-yellow)] mb-6">
                 {stat.percentage}
@@ -68,7 +68,7 @@ export default function WhyLifeAfterSport() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center"
         >
-          <p className="text-lg text-[var(--text-secondary)] mb-8">
+          <p className="text-lg text-[var(--text-secondary)] mb-12">
             Ready to discover your career path?
           </p>
           <Button variant="primary" href={user ? "/quiz" : "/register"}>
