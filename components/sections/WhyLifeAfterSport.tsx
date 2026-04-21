@@ -24,7 +24,7 @@ export default function WhyLifeAfterSport() {
   const { user } = useAuth();
 
   return (
-    <section className="py-24 md:py-36 bg-[var(--dark-navy)]" id="why">
+    <section className="py-24 md:py-36 bg-[var(--dark-navy)] w-full" id="why">
       <div className="content-container">
         <div className="text-center mb-16 md:mb-24">
           <SectionHeading>Why Life After Sport?</SectionHeading>

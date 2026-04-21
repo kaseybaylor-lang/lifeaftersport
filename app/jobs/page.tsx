@@ -191,7 +191,7 @@ export default function JobsPage() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/30 rounded-2xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/30 rounded-2xl p-10 md:p-12 max-w-3xl w-full max-h-[85vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button */}

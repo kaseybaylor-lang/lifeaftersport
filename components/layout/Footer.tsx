@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 
-const quickLinks = [
+const linksCol1 = [
   { name: "Programs", href: "/programs" },
   { name: "Resources", href: "/resources" },
+];
+
+const linksCol2 = [
   { name: "Jobs", href: "/jobs" },
   { name: "Mentors", href: "/mentors" },
   { name: "Get Involved", href: "/contact" },
@@ -44,16 +47,23 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Right - Quick Links */}
-          <div>
-            <h3
-              className="font-[family-name:var(--font-oswald)] font-[700] text-[var(--text-primary)] uppercase text-lg mb-4"
-              style={{ fontFamily: "var(--font-oswald)" }}
-            >
-              Quick Links
-            </h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
+          {/* Right - Links in Two Columns */}
+          <div className="grid grid-cols-2 gap-8">
+            <ul className="space-y-3">
+              {linksCol1.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] hover:text-[var(--primary-yellow)] transition-colors"
+                    style={{ fontFamily: "var(--font-jakarta)" }}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="space-y-3">
+              {linksCol2.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}

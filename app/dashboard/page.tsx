@@ -123,22 +123,22 @@ export default function DashboardPage() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-12"
         >
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-xl font-heading font-bold text-white mb-1">
+              <h3 className="text-2xl font-heading font-bold text-white mb-2">
                 Profile Completion
               </h3>
-              <p className="text-sm text-[var(--text-secondary)]">
+              <p className="text-base text-[var(--text-secondary)]">
                 {profileCompletion < 100
                   ? "Complete your profile to unlock all features"
                   : "Your profile is complete!"}
               </p>
             </div>
-            <div className="text-3xl font-heading font-bold text-[var(--neon-yellow)]">
+            <div className="text-5xl font-heading font-bold text-[var(--neon-yellow)]">
               {profileCompletion}%
             </div>
           </div>
-          <div className="h-3 bg-[var(--black)] rounded-full overflow-hidden">
+          <div className="h-4 bg-[var(--black)] rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-[var(--neon-yellow)]"
               initial={{ width: 0 }}
@@ -147,7 +147,7 @@ export default function DashboardPage() {
             />
           </div>
           {profileCompletion < 100 && (
-            <div className="mt-4 space-y-2 text-sm text-[var(--text-secondary)]">
+            <div className="mt-6 space-y-3 text-base text-[var(--text-secondary)]">
               {!quizResults && (
                 <p>• Take the career quiz to boost your profile (+30%)</p>
               )}
@@ -240,7 +240,7 @@ export default function DashboardPage() {
               >
                 <Link href={action.href}>
                   <div
-                    className={`h-full p-10 rounded-2xl border transition-all cursor-pointer min-h-[200px] flex flex-col justify-center ${
+                    className={`h-full p-10 rounded-2xl border transition-all cursor-pointer min-h-[200px] flex flex-col items-center justify-center text-center ${
                       action.variant === "primary"
                         ? "bg-[var(--neon-yellow)]/10 border-[var(--neon-yellow)] hover:bg-[var(--neon-yellow)]/20"
                         : "bg-[var(--dark-navy)]/50 border-[var(--neon-yellow)]/20 hover:border-[var(--neon-yellow)]/40"
