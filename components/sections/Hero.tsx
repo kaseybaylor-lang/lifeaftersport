@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Hero() {
+  const { isAuthenticated } = useAuth();
   return (
     <section className="min-h-screen grid-texture flex items-center relative overflow-hidden">
       <div className="content-container py-32">
@@ -73,20 +75,22 @@ export default function Hero() {
               competitive sports.
             </motion.p>
 
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.3 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Button variant="primary" href="/register">
-                Sign Up
-              </Button>
-              <Button variant="outline" href="/signin">
-                Sign In
-              </Button>
-            </motion.div>
+            {/* CTA Buttons - Only show when not authenticated */}
+            {!isAuthenticated && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.3 }}
+                className="flex flex-wrap gap-4"
+              >
+                <Button variant="primary" href="/register">
+                  Sign Up
+                </Button>
+                <Button variant="outline" href="/signin">
+                  Sign In
+                </Button>
+              </motion.div>
+            )}
           </div>
 
           {/* Right Column - Optional space for future graphics */}
