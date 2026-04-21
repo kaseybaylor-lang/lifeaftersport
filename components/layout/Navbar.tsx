@@ -8,7 +8,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const navLinks = [
-  { name: "Why Life After Sport", href: "#why" },
+  { name: "Programs", href: "/programs", isPage: true },
+  { name: "Resources", href: "/resources", isPage: true },
+  { name: "Get Involved", href: "/contact", isPage: true },
 ];
 
 export default function Navbar() {
@@ -91,25 +93,14 @@ export default function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
-                <button
+                <Link
                   key={link.name}
-                  onClick={() => scrollToSection(link.href)}
-                  className={`font-[family-name:var(--font-jakarta)] transition-colors duration-200 relative ${
-                    activeSection === link.href
-                      ? "text-[var(--neon-yellow)]"
-                      : "text-[var(--text-primary)] hover:text-[var(--neon-yellow)]"
-                  }`}
+                  href={link.href}
+                  className="font-[family-name:var(--font-jakarta)] transition-colors duration-200 text-[var(--text-primary)] hover:text-[var(--neon-yellow)]"
                   style={{ fontFamily: "var(--font-jakarta)" }}
                 >
                   {link.name}
-                  {activeSection === link.href && (
-                    <motion.div
-                      layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[var(--neon-yellow)]"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </button>
+                </Link>
               ))}
               {user ? (
                 <div className="flex items-center gap-3 ml-4">
@@ -198,24 +189,21 @@ export default function Navbar() {
                 {/* Navigation Links */}
                 <div className="flex flex-col gap-6 mb-8">
                   {navLinks.map((link, index) => (
-                    <motion.button
+                    <motion.div
                       key={link.name}
-                      onClick={() => scrollToSection(link.href)}
-                      className={`font-[family-name:var(--font-oswald)] font-[600] uppercase text-2xl text-left transition-colors duration-200 ${
-                        activeSection === link.href
-                          ? "text-[var(--neon-yellow)]"
-                          : "text-[var(--text-primary)] hover:text-[var(--neon-yellow)]"
-                      }`}
-                      style={{ fontFamily: "var(--font-oswald)" }}
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      {link.name}
-                      {activeSection === link.href && (
-                        <span className="ml-2">→</span>
-                      )}
-                    </motion.button>
+                      <Link
+                        href={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="font-[family-name:var(--font-oswald)] font-[600] uppercase text-2xl text-left transition-colors duration-200 text-[var(--text-primary)] hover:text-[var(--neon-yellow)] block"
+                        style={{ fontFamily: "var(--font-oswald)" }}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
 

@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
+
 const quickLinks = [
-  { name: "Problem", href: "#problem" },
-  { name: "Solution", href: "#solution" },
-  { name: "Partners", href: "#partners" },
-  { name: "Pricing", href: "#pricing" },
+  { name: "Programs", href: "/programs" },
+  { name: "Resources", href: "/resources" },
+  { name: "Jobs", href: "/jobs" },
+  { name: "Mentors", href: "/mentors" },
+  { name: "Get Involved", href: "/contact" },
 ];
 
 export default function Footer() {
@@ -59,13 +62,13 @@ export default function Footer() {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
-                  <button
-                    onClick={() => scrollToSection(link.href)}
+                  <Link
+                    href={link.href}
                     className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] hover:text-[var(--primary-yellow)] transition-colors"
                     style={{ fontFamily: "var(--font-jakarta)" }}
                   >
                     {link.name}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
