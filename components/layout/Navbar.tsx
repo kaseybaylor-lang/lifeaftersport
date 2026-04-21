@@ -66,17 +66,8 @@ export default function Navbar() {
               ))}
               {user ? (
                 <div className="flex items-center gap-3 ml-4">
-                  <Button variant="outline" href="/dashboard">
+                  <Button variant="primary" href="/dashboard">
                     Dashboard
-                  </Button>
-                  <Button variant="outline" href="/jobs">
-                    Jobs
-                  </Button>
-                  <Button variant="outline" href="/mentors">
-                    Mentors
-                  </Button>
-                  <Button variant="outline" href="/quiz">
-                    Quiz
                   </Button>
                   <span className="text-[var(--text-primary)] text-sm">
                     <span className="text-[var(--neon-yellow)] font-bold">{user.name.split(' ')[0]}</span>

@@ -69,8 +69,8 @@ export default function JobsPage() {
         </div>
 
         {/* Filters & Search */}
-        <div className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* Search */}
             <input
               type="text"
@@ -120,7 +120,7 @@ export default function JobsPage() {
         </div>
 
         {/* Job Listings */}
-        <div className="grid gap-6">
+        <div className="grid gap-5">
           {filteredJobs.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-[var(--text-secondary)] text-lg">
@@ -134,7 +134,7 @@ export default function JobsPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-6 hover:border-[var(--neon-yellow)]/40 transition-all cursor-pointer"
+                className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 hover:border-[var(--neon-yellow)]/40 transition-all cursor-pointer"
                 onClick={() => setSelectedJob(job)}
               >
                 <div className="flex items-start justify-between gap-4">

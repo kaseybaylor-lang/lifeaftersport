@@ -24,9 +24,9 @@ export default function WhyLifeAfterSport() {
   const { user } = useAuth();
 
   return (
-    <section className="py-32 bg-[var(--dark-navy)]" id="why">
+    <section className="py-24 md:py-36 bg-[var(--dark-navy)]" id="why">
       <div className="content-container">
-        <div className="text-center mb-20">
+        <div className="text-center mb-16 md:mb-24">
           <SectionHeading>Why Life After Sport?</SectionHeading>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -36,11 +36,11 @@ export default function WhyLifeAfterSport() {
             className="text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl mx-auto mt-6"
           >
             Based on our research with college student-athletes, the transition
-            from sport to career is filled with uncertainty. Here's what we found:
+            from sport to career is filled with uncertainty. Here&apos;s what we found:
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-8 md:gap-10 mb-20 md:mb-24">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -48,7 +48,7 @@ export default function WhyLifeAfterSport() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-[var(--black)] border border-[var(--neon-yellow)]/20 rounded-2xl p-8 text-center hover:border-[var(--neon-yellow)]/40 transition-all duration-300"
+              className="bg-[var(--black)] border border-[var(--neon-yellow)]/20 rounded-2xl p-10 md:p-12 text-center hover:border-[var(--neon-yellow)]/40 transition-all duration-300"
             >
               <div className="text-6xl md:text-7xl font-heading font-bold text-[var(--neon-yellow)] mb-6">
                 {stat.percentage}
@@ -68,7 +68,7 @@ export default function WhyLifeAfterSport() {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center"
         >
-          <p className="text-lg text-[var(--text-secondary)] mb-6">
+          <p className="text-lg text-[var(--text-secondary)] mb-8">
             Ready to discover your career path?
           </p>
           <Button variant="primary" href={user ? "/quiz" : "/register"}>

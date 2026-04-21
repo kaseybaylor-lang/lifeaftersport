@@ -11,22 +11,15 @@ const quickLinks = [
 ];
 
 export default function Footer() {
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <footer className="bg-[var(--background-card)] border-t border-[var(--text-secondary)]/20">
-      <div className="content-container py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 mb-12">
+      <div className="content-container py-20 md:py-24">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 mb-16">
           {/* Left - Logo & Tagline */}
           <div>
             <button

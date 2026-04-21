@@ -99,14 +99,14 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[var(--black)] pt-24 pb-16">
+    <div className="min-h-screen bg-[var(--black)] pt-28 pb-20">
       <div className="content-container">
         {/* Welcome Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-16"
         >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-3">
             Welcome back, <span className="text-[var(--neon-yellow)]">{user.name.split(' ')[0]}</span>!
@@ -121,7 +121,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-6 mb-8"
+          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-12"
         >
           <div className="flex items-center justify-between mb-3">
             <div>
@@ -226,11 +226,11 @@ export default function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-heading font-bold text-white mb-6">
+        <div className="mb-12">
+          <h2 className="text-2xl font-heading font-bold text-white mb-8">
             Quick Actions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
@@ -240,14 +240,14 @@ export default function DashboardPage() {
               >
                 <Link href={action.href}>
                   <div
-                    className={`h-full p-8 rounded-2xl border transition-all cursor-pointer ${
+                    className={`h-full p-10 rounded-2xl border transition-all cursor-pointer min-h-[200px] flex flex-col justify-center ${
                       action.variant === "primary"
                         ? "bg-[var(--neon-yellow)]/10 border-[var(--neon-yellow)] hover:bg-[var(--neon-yellow)]/20"
                         : "bg-[var(--dark-navy)]/50 border-[var(--neon-yellow)]/20 hover:border-[var(--neon-yellow)]/40"
                     }`}
                   >
-                    <div className="text-5xl mb-4">{action.icon}</div>
-                    <h3 className="text-2xl font-heading font-bold text-white mb-2">
+                    <div className="text-5xl mb-5">{action.icon}</div>
+                    <h3 className="text-2xl font-heading font-bold text-white mb-3">
                       {action.title}
                     </h3>
                     <p className="text-base text-[var(--text-secondary)]">

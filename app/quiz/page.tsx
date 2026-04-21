@@ -238,11 +238,11 @@ export default function QuizPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-3xl"
       >
         <div className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-3xl p-8 md:p-12 backdrop-blur-sm">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-6">
             <Link href="/">
               <div className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider cursor-pointer">
                 LIFE AFTER SPORT
@@ -254,7 +254,7 @@ export default function QuizPage() {
           </div>
 
           {/* Progress Bar */}
-          <div className="h-1 bg-white/10 rounded-full mb-10">
+          <div className="h-1 bg-white/10 rounded-full mb-8">
             <motion.div
               className="h-full bg-[var(--neon-yellow)] rounded-full"
               initial={{ width: 0 }}
@@ -272,27 +272,24 @@ export default function QuizPage() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="text-[var(--neon-yellow)]/10 font-heading font-bold text-7xl leading-none mb-2">
-                0{current + 1}
-              </div>
-              <h2 className="text-white font-heading font-bold text-3xl md:text-4xl mb-3 leading-tight">
+              <h2 className="text-white font-heading font-bold text-2xl md:text-3xl mb-2 leading-tight">
                 {q.question}
               </h2>
               {q.type === "multi" && (
-                <p className="text-[var(--neon-yellow)]/60 text-sm mb-8">
+                <p className="text-[var(--neon-yellow)]/60 text-sm mb-4">
                   Select up to {q.max}
                 </p>
               )}
 
               {/* Options */}
-              <div className={`grid gap-3 mb-10 mt-8 ${
+              <div className={`grid gap-3 mb-8 mt-6 ${
                 q.options.length <= 4 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-2 md:grid-cols-3"
               }`}>
                 {q.options.map((option) => (
                   <button
                     key={option}
                     onClick={() => handleSelect(option)}
-                    className={`text-left px-4 py-3 rounded-xl border transition-all text-sm ${
+                    className={`text-left px-5 py-4 rounded-xl border transition-all text-sm ${
                       isSelected(option)
                         ? "bg-[var(--neon-yellow)]/10 border-[var(--neon-yellow)] text-[var(--neon-yellow)]"
                         : "bg-white/5 border-white/10 text-white hover:border-white/30"
@@ -309,7 +306,7 @@ export default function QuizPage() {
           </AnimatePresence>
 
           {/* Navigation */}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center pt-2">
             {current > 0 ? (
               <button
                 onClick={back}
