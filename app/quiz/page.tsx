@@ -285,19 +285,21 @@ export default function QuizPage() {
               )}
 
               {/* Options */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-10 mt-8">
+              <div className={`grid gap-3 mb-10 mt-8 ${
+                q.options.length <= 4 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-2 md:grid-cols-3"
+              }`}>
                 {q.options.map((option) => (
                   <button
                     key={option}
                     onClick={() => handleSelect(option)}
-                    className={`text-left px-5 py-4 rounded-xl border transition-all ${
+                    className={`text-left px-4 py-3 rounded-xl border transition-all text-sm ${
                       isSelected(option)
                         ? "bg-[var(--neon-yellow)]/10 border-[var(--neon-yellow)] text-[var(--neon-yellow)]"
                         : "bg-white/5 border-white/10 text-white hover:border-white/30"
                     }`}
                   >
                     {isSelected(option) && (
-                      <span className="font-bold mr-2">✓</span>
+                      <span className="font-bold mr-1">✓</span>
                     )}
                     {option}
                   </button>
