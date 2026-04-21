@@ -121,7 +121,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-12"
+          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-16"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -230,7 +230,7 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-heading font-bold text-white mb-8">
             Quick Actions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
