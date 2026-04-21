@@ -9,16 +9,16 @@ export default function Hero() {
       <div className="content-container py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Main Content */}
-          <div className="space-y-10">
+          <div className="space-y-12">
             {/* Main Headline - Staggered Animation */}
-            <div className="space-y-2">
+            <div className="space-y-1">
               {["LIFE", "AFTER", "SPORT."].map((word, index) => (
                 <motion.h1
                   key={word}
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.3 + index * 0.15 }}
-                  className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--primary-yellow)] uppercase text-7xl md:text-8xl lg:text-9xl leading-[0.9] tracking-[-0.02em]"
+                  className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--primary-yellow)] uppercase text-7xl md:text-8xl lg:text-9xl leading-[1] tracking-[-0.02em]"
                   style={{ fontFamily: "var(--font-oswald)" }}
                 >
                   {word}
