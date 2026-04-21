@@ -4,19 +4,12 @@ import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
 
 export default function Hero() {
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <section className="min-h-screen grid-texture flex items-center relative overflow-hidden">
       <div className="content-container py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Main Content */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             {/* Main Headline - Staggered Animation */}
             <div className="space-y-2">
               {["LIFE", "AFTER", "SPORT."].map((word, index) => (
@@ -125,20 +118,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Credit in bottom right */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 2 }}
-        className="absolute bottom-8 right-8 hidden md:block"
-      >
-        <p
-          className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] text-sm"
-          style={{ fontFamily: "var(--font-jakarta)" }}
-        >
-          Kasey, Ella, Kenny
-        </p>
-      </motion.div>
     </section>
   );
 }
