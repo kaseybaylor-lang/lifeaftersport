@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar, Footer } from "@/components/layout";
-import { SectionHeading, Card, Badge, ScrollToTop, PageLoadAnimation } from "@/components/ui";
+import { SectionHeading, Card, ScrollToTop, PageLoadAnimation } from "@/components/ui";
 
 const categories = [
   {
@@ -211,7 +211,6 @@ export default function ResourcesPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Badge variant="outline">Resources Hub</Badge>
               <h1
                 className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--neon-yellow)] uppercase tracking-[-0.02em] text-5xl md:text-6xl lg:text-7xl mt-6"
                 style={{ fontFamily: "var(--font-oswald)" }}

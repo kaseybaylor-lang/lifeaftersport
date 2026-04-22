@@ -106,12 +106,12 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12"
+          className="mb-16"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-4">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-4">
             Welcome back, <span className="text-[var(--neon-yellow)]">{user.name.split(' ')[0]}</span>!
           </h1>
-          <p className="text-lg md:text-xl text-[var(--text-secondary)]">
+          <p className="text-xl md:text-2xl text-[var(--text-secondary)]">
             Former {user.sport} athlete • Class of {user.graduationYear}
           </p>
         </motion.div>
@@ -121,7 +121,7 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-16"
+          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-20"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -226,8 +226,8 @@ export default function DashboardPage() {
         )}
 
         {/* Quick Actions */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-heading font-bold text-white mb-8">
+        <div className="mb-20">
+          <h2 className="text-2xl font-heading font-bold text-white mb-10">
             Quick Actions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">

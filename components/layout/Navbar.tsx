@@ -9,8 +9,6 @@ import Link from "next/link";
 
 const navLinks = [
   { name: "Programs", href: "/programs", isPage: true },
-  { name: "Resources", href: "/resources", isPage: true },
-  { name: "Get Involved", href: "/contact", isPage: true },
 ];
 
 export default function Navbar() {

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Navbar, Footer } from "@/components/layout";
-import { SectionHeading, Card, Badge, ScrollToTop, PageLoadAnimation } from "@/components/ui";
+import { SectionHeading, Card, ScrollToTop, PageLoadAnimation } from "@/components/ui";
 
 const programs = [
   {
@@ -106,7 +106,6 @@ export default function ProgramsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Badge variant="outline">Programs & Services</Badge>
               <h1
                 className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--neon-yellow)] uppercase tracking-[-0.02em] text-5xl md:text-6xl lg:text-7xl mt-6"
                 style={{ fontFamily: "var(--font-oswald)" }}
@@ -132,7 +131,7 @@ export default function ProgramsPage() {
             <SectionHeading subtitle="Everything you need to build your career after sport">
               Our Programs
             </SectionHeading>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 max-w-5xl mx-auto">
               {programs.map((program, index) => (
                 <motion.div
                   key={program.title}
