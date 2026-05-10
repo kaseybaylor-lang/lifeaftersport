@@ -26,7 +26,8 @@ export default function SignInPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    const success = signIn(email, password);
+    const authRole = role === "athlete" ? "student" : role;
+    const success = signIn(email, password, authRole);
     if (success) {
       router.push("/dashboard");
     } else {

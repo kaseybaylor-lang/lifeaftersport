@@ -41,23 +41,35 @@ export const auth = {
   },
 
   // Sign in existing user (demo mode: any email/password works)
-  signIn: (email: string, _password: string): User | null => {
+  signIn: (email: string, _password: string, role?: 'student' | 'mentor' | 'employer'): User | null => {
     const userStored = localStorage.getItem(USER_STORAGE_KEY);
 
     if (userStored) {
-      return JSON.parse(userStored);
+      const existing: User = JSON.parse(userStored);
+      // Update role if a different one was selected
+      if (role && existing.role !== role) {
+        existing.role = role;
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(existing));
+      }
+      return existing;
     }
 
-    // Demo mode: create a default user for any credentials
+    // Demo mode: create a user with the selected role
+    const roleNames: Record<string, string> = {
+      student: "Marcus Thompson",
+      mentor: "Sarah Chen",
+      employer: "David Rodriguez",
+    };
+    const selectedRole = role || "student";
     const demoUser: User = {
       id: crypto.randomUUID(),
-      name: "Marcus Thompson",
+      name: roleNames[selectedRole] || "Marcus Thompson",
       email: email,
-      sport: "Football",
-      university: "University of Michigan",
-      graduationYear: "2026",
+      sport: selectedRole === "student" ? "Football" : "",
+      university: selectedRole === "student" ? "University of Michigan" : "",
+      graduationYear: selectedRole === "student" ? "2026" : "",
       status: "current-athlete",
-      role: "student",
+      role: selectedRole,
     };
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(demoUser));
     return demoUser;
