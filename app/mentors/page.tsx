@@ -1,377 +1,368 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
-import {
-  mentors as allMentors,
-  filterMentors,
-  connectWithMentor,
-  disconnectFromMentor,
-  isConnectedWithMentor,
-  sendMessage,
-  type Mentor,
-} from "@/lib/mentors";
+import { useState, useMemo } from "react";
 import Link from "next/link";
+import { Navbar, Footer } from "@/components/layout";
+import { mentors as allMentors, type Mentor } from "@/lib/mentors";
+
+/* ------------------------------------------------------------------ */
+/*  Inline enrichment data (fields not on Mentor type)                */
+/* ------------------------------------------------------------------ */
+const enrichment: Record<
+  string,
+  {
+    rating: number;
+    sessions: number;
+    expertise: string[];
+    availability: "accepting" | "limited" | "full";
+    school: string;
+  }
+> = {
+  "1": {
+    rating: 4.9,
+    sessions: 142,
+    expertise: ["Enterprise Sales", "Leadership", "Career Pivots"],
+    availability: "accepting",
+    school: "USC",
+  },
+  "2": {
+    rating: 4.8,
+    sessions: 98,
+    expertise: ["Brand Strategy", "Sports Marketing", "Campaign Management"],
+    availability: "limited",
+    school: "Stanford",
+  },
+  "3": {
+    rating: 5.0,
+    sessions: 76,
+    expertise: ["Sports Medicine", "Rehab Protocols", "Patient Care"],
+    availability: "accepting",
+    school: "UCLA",
+  },
+  "4": {
+    rating: 4.7,
+    sessions: 63,
+    expertise: ["Product Management", "Sports Tech", "Data Analytics"],
+    availability: "accepting",
+    school: "Oregon",
+  },
+  "5": {
+    rating: 4.9,
+    sessions: 110,
+    expertise: ["Investment Banking", "Financial Modeling", "Networking"],
+    availability: "limited",
+    school: "Vanderbilt",
+  },
+  "6": {
+    rating: 4.8,
+    sessions: 55,
+    expertise: ["Coaching", "Player Development", "Recruiting"],
+    availability: "full",
+    school: "Penn State",
+  },
+  "7": {
+    rating: 4.6,
+    sessions: 47,
+    expertise: ["Data Science", "Performance Analytics", "Python"],
+    availability: "accepting",
+    school: "Florida",
+  },
+  "8": {
+    rating: 4.7,
+    sessions: 82,
+    expertise: ["Social Media", "Content Strategy", "Personal Branding"],
+    availability: "accepting",
+    school: "Duke",
+  },
+  "9": {
+    rating: 4.9,
+    sessions: 91,
+    expertise: ["Sports Law", "Contract Negotiation", "Athlete Representation"],
+    availability: "limited",
+    school: "UConn",
+  },
+  "10": {
+    rating: 4.5,
+    sessions: 34,
+    expertise: ["Brand Partnerships", "Campus Marketing", "Event Planning"],
+    availability: "accepting",
+    school: "UNC",
+  },
+};
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+}
+
+function AvailabilityBadge({ status }: { status: "accepting" | "limited" | "full" }) {
+  if (status === "accepting")
+    return <span className="badge badge--success">Accepting mentees</span>;
+  if (status === "limited")
+    return <span className="badge badge--yellow">Limited availability</span>;
+  return <span className="badge">Currently full</span>;
+}
 
 export default function MentorsPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [sportFilter, setSportFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
-  const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
-  const [connectedMentorIds, setConnectedMentorIds] = useState<string[]>([]);
-  const [showMessageForm, setShowMessageForm] = useState(false);
-  const [messageSubject, setMessageSubject] = useState("");
-  const [messageContent, setMessageContent] = useState("");
+  const [sportFilter, setSportFilter] = useState("all");
+  const [acceptingOnly, setAcceptingOnly] = useState(false);
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/signin");
+  const sports = useMemo(() => Array.from(new Set(allMentors.map((m) => m.formerSport))).sort(), []);
+  const industries = useMemo(() => Array.from(new Set(allMentors.map((m) => m.industry))).sort(), []);
+
+  const filtered = useMemo(() => {
+    let list = [...allMentors];
+
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter(
+        (m) =>
+          m.name.toLowerCase().includes(q) ||
+          m.currentRole.toLowerCase().includes(q) ||
+          m.company.toLowerCase().includes(q)
+      );
     }
-  }, [user, loading, router]);
 
-  // Load connected mentors from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const connected = localStorage.getItem("lifeaftersport_connected_mentors");
-      setConnectedMentorIds(connected ? JSON.parse(connected) : []);
-    }
-  }, []);
+    if (industryFilter !== "all") list = list.filter((m) => m.industry === industryFilter);
+    if (sportFilter !== "all") list = list.filter((m) => m.formerSport === sportFilter);
+    if (acceptingOnly)
+      list = list.filter((m) => enrichment[m.id]?.availability === "accepting");
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[var(--black)] flex items-center justify-center">
-        <div className="text-[var(--neon-yellow)] text-xl">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
-
-  const filteredMentors = filterMentors(allMentors, {
-    sport: sportFilter,
-    industry: industryFilter,
-  });
-
-  const sports = Array.from(new Set(allMentors.map((m) => m.formerSport)));
-  const industries = Array.from(new Set(allMentors.map((m) => m.industry)));
-
-  const toggleConnection = (mentorId: string) => {
-    if (connectedMentorIds.includes(mentorId)) {
-      disconnectFromMentor(mentorId);
-      setConnectedMentorIds(connectedMentorIds.filter((id) => id !== mentorId));
-    } else {
-      connectWithMentor(mentorId);
-      setConnectedMentorIds([...connectedMentorIds, mentorId]);
-    }
-  };
-
-  const handleSendMessage = () => {
-    if (!selectedMentor || !messageSubject || !messageContent) return;
-
-    sendMessage(selectedMentor.id, selectedMentor.name, messageSubject, messageContent);
-    setShowMessageForm(false);
-    setMessageSubject("");
-    setMessageContent("");
-    alert("Message sent! Check your inbox for a response.");
-  };
+    return list;
+  }, [search, industryFilter, sportFilter, acceptingOnly]);
 
   return (
-    <div className="min-h-screen bg-[var(--black)] pt-24 pb-16">
-      <div className="content-container">
-        {/* Header */}
-        <div className="mb-12">
-          <Link href="/">
-            <div className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-4 inline-block cursor-pointer hover:underline">
-              ← BACK TO HOME
-            </div>
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-4">
-            Mentor Network
-          </h1>
-          <p className="text-[var(--text-secondary)] text-lg">
-            Connect with {filteredMentors.length} former student-athletes who've successfully
-            transitioned to their careers
+    <>
+      <Navbar />
+
+      {/* Page header */}
+      <div className="page-header">
+        <div className="page-header__inner">
+          <div className="eyebrow">
+            <span>Mentors</span>
+          </div>
+          <h1>Find your guide.</h1>
+          <p>
+            Connect with former student-athletes who have successfully transitioned into
+            rewarding careers. Get real advice from people who understand the journey.
           </p>
         </div>
+      </div>
 
-        {/* Filters */}
-        <div className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Sport Filter */}
-            <select
-              value={sportFilter}
-              onChange={(e) => setSportFilter(e.target.value)}
-              className="px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)]"
-            >
-              <option value="all">All Sports</option>
-              {sports.map((sport) => (
-                <option key={sport} value={sport}>
-                  {sport}
-                </option>
-              ))}
-            </select>
+      {/* Body */}
+      <div className="section">
+        <div className="container" style={{ display: "flex", gap: 32, flexDirection: "column" }}>
+          {/* Desktop: sidebar + cards */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "280px 1fr",
+              gap: 32,
+            }}
+            className="mentors-layout"
+          >
+            {/* ---- Sidebar filters ---- */}
+            <aside>
+              <div
+                className="card card--lg"
+                style={{ position: "sticky", top: 88, display: "flex", flexDirection: "column", gap: 20 }}
+              >
+                <h3
+                  style={{
+                    fontSize: 14,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "var(--text-muted)",
+                    marginBottom: 4,
+                  }}
+                >
+                  Filters
+                </h3>
 
-            {/* Industry Filter */}
-            <select
-              value={industryFilter}
-              onChange={(e) => setIndustryFilter(e.target.value)}
-              className="px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)]"
-            >
-              <option value="all">All Industries</option>
-              {industries.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Mentor Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredMentors.map((mentor, index) => (
-            <motion.div
-              key={mentor.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-6 hover:border-[var(--neon-yellow)]/40 transition-all cursor-pointer"
-              onClick={() => setSelectedMentor(mentor)}
-            >
-              {/* Avatar */}
-              <div className="w-20 h-20 rounded-full bg-[var(--neon-yellow)]/20 flex items-center justify-center text-[var(--neon-yellow)] text-3xl font-bold mb-4">
-                {mentor.name.charAt(0)}
-              </div>
-
-              {/* Info */}
-              <div className="mb-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <h3 className="text-xl font-heading font-bold text-white">
-                    {mentor.name}
-                  </h3>
-                  {mentor.verified && (
-                    <span className="text-[var(--neon-yellow)]" title="Verified Mentor">
-                      ✓
-                    </span>
-                  )}
+                {/* Search */}
+                <div>
+                  <label className="field-label">Search</label>
+                  <input
+                    className="input"
+                    placeholder="Name, role, or company..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
                 </div>
-                <p className="text-[var(--text-primary)] text-sm mb-1">
-                  {mentor.currentRole} at {mentor.company}
-                </p>
-                <p className="text-[var(--text-secondary)] text-sm">
-                  Former {mentor.formerSport} athlete
-                </p>
-              </div>
 
-              {/* Industry Badge */}
-              <div className="mb-4">
-                <span className="px-3 py-1 bg-[var(--neon-yellow)]/10 border border-[var(--neon-yellow)]/30 text-[var(--neon-yellow)] text-xs font-semibold rounded-full">
-                  {mentor.industry}
+                {/* Industry */}
+                <div>
+                  <label className="field-label">Industry</label>
+                  <select
+                    className="select"
+                    value={industryFilter}
+                    onChange={(e) => setIndustryFilter(e.target.value)}
+                  >
+                    <option value="all">All industries</option>
+                    {industries.map((i) => (
+                      <option key={i} value={i}>
+                        {i}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Sport */}
+                <div>
+                  <label className="field-label">Former sport</label>
+                  <select
+                    className="select"
+                    value={sportFilter}
+                    onChange={(e) => setSportFilter(e.target.value)}
+                  >
+                    <option value="all">All sports</option>
+                    {sports.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Accepting only */}
+                <label className="checkbox">
+                  <input
+                    type="checkbox"
+                    checked={acceptingOnly}
+                    onChange={(e) => setAcceptingOnly(e.target.checked)}
+                  />
+                  Accepting mentees only
+                </label>
+              </div>
+            </aside>
+
+            {/* ---- Right column ---- */}
+            <div>
+              {/* Results counter */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+                  Showing
+                </span>
+                <span className="badge badge--yellow">{filtered.length}</span>
+                <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+                  mentor{filtered.length !== 1 ? "s" : ""}
                 </span>
               </div>
 
-              {/* Connect Button */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleConnection(mentor.id);
-                }}
-                className={`w-full px-4 py-2 rounded-lg font-semibold transition-all ${
-                  connectedMentorIds.includes(mentor.id)
-                    ? "bg-[var(--neon-yellow)]/20 border border-[var(--neon-yellow)] text-[var(--neon-yellow)]"
-                    : "bg-[var(--neon-yellow)] text-[var(--black)] hover:shadow-lg"
-                }`}
-              >
-                {connectedMentorIds.includes(mentor.id) ? "Connected ✓" : "Connect"}
-              </button>
-            </motion.div>
-          ))}
-        </div>
+              {/* Mentor cards grid */}
+              <div className="grid grid--2" style={{ gap: 20 }}>
+                {filtered.map((mentor) => {
+                  const extra = enrichment[mentor.id];
+                  return (
+                    <Link key={mentor.id} href={`/mentors/${mentor.id}`} style={{ textDecoration: "none" }}>
+                      <div className="card card--interactive" style={{ display: "flex", flexDirection: "column", gap: 14, height: "100%" }}>
+                        {/* Top row: avatar + info */}
+                        <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                          <div className="avatar avatar--lg">{getInitials(mentor.name)}</div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                              <span
+                                style={{
+                                  fontFamily: "var(--font-oswald), Impact, sans-serif",
+                                  fontSize: 18,
+                                  color: "var(--text-strong)",
+                                  fontWeight: 600,
+                                  textTransform: "uppercase",
+                                  letterSpacing: "-0.01em",
+                                }}
+                              >
+                                {mentor.name}
+                              </span>
+                              {extra && (
+                                <span style={{ fontSize: 13, color: "var(--accent)" }}>
+                                  {"*"} {extra.rating}
+                                </span>
+                              )}
+                            </div>
+                            <p style={{ fontSize: 14, color: "var(--text)", margin: 0 }}>
+                              {mentor.currentRole} at {mentor.company}
+                            </p>
+                            <p style={{ fontSize: 13, color: "var(--text-subtle)", margin: 0 }}>
+                              Former {mentor.formerSport}
+                            </p>
+                          </div>
+                        </div>
 
-        {filteredMentors.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-[var(--text-secondary)] text-lg">
-              No mentors found. Try adjusting your filters.
-            </p>
+                        {/* Bio - 2 lines */}
+                        <p
+                          style={{
+                            fontSize: 14,
+                            color: "var(--text-muted)",
+                            margin: 0,
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {mentor.bio}
+                        </p>
+
+                        {/* Expertise badges */}
+                        {extra && (
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                            {extra.expertise.map((tag) => (
+                              <span key={tag} className="badge">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Bottom row: availability + sessions */}
+                        {extra && (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              marginTop: "auto",
+                              paddingTop: 10,
+                              borderTop: "1px solid var(--border)",
+                            }}
+                          >
+                            <AvailabilityBadge status={extra.availability} />
+                            <span style={{ fontSize: 13, color: "var(--text-subtle)" }}>
+                              {extra.sessions} sessions
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {filtered.length === 0 && (
+                <div style={{ textAlign: "center", padding: "64px 0" }}>
+                  <p className="text-muted">No mentors match your filters. Try broadening your search.</p>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Mentor Profile Modal */}
-      <AnimatePresence>
-        {selectedMentor && !showMessageForm && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
-            onClick={() => setSelectedMentor(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/30 rounded-2xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedMentor(null)}
-                className="float-right text-white/40 hover:text-white text-2xl"
-              >
-                ✕
-              </button>
+      {/* Responsive override: stack on small screens */}
+      <style>{`
+        @media (max-width: 767px) {
+          .mentors-layout {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
 
-              {/* Profile Header */}
-              <div className="mb-6">
-                <div className="w-24 h-24 rounded-full bg-[var(--neon-yellow)]/20 flex items-center justify-center text-[var(--neon-yellow)] text-4xl font-bold mb-4">
-                  {selectedMentor.name.charAt(0)}
-                </div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h2 className="text-3xl font-heading font-bold text-white">
-                    {selectedMentor.name}
-                  </h2>
-                  {selectedMentor.verified && (
-                    <span className="px-3 py-1 bg-[var(--neon-yellow)]/10 border border-[var(--neon-yellow)]/30 text-[var(--neon-yellow)] text-xs font-semibold rounded-full">
-                      Verified Mentor
-                    </span>
-                  )}
-                </div>
-                <p className="text-xl text-[var(--text-primary)] font-semibold mb-2">
-                  {selectedMentor.currentRole} at {selectedMentor.company}
-                </p>
-                <p className="text-[var(--text-secondary)]">
-                  Former {selectedMentor.formerSport} athlete • {selectedMentor.industry}
-                </p>
-              </div>
-
-              {/* Bio */}
-              <div className="mb-6">
-                <h3 className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-3">
-                  ABOUT
-                </h3>
-                <p className="text-[var(--text-primary)] leading-relaxed">
-                  {selectedMentor.bio}
-                </p>
-              </div>
-
-              {/* Career Journey */}
-              <div className="mb-8">
-                <h3 className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-4">
-                  CAREER JOURNEY
-                </h3>
-                <div className="space-y-3">
-                  {selectedMentor.careerJourney.map((step, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-[var(--neon-yellow)]/20 border border-[var(--neon-yellow)]/40 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <div className="w-2 h-2 rounded-full bg-[var(--neon-yellow)]" />
-                      </div>
-                      <p className="text-[var(--text-primary)] leading-relaxed">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleConnection(selectedMentor.id);
-                  }}
-                  className={`px-6 py-3 rounded-xl font-semibold transition-all ${
-                    connectedMentorIds.includes(selectedMentor.id)
-                      ? "border border-[var(--neon-yellow)]/40 text-[var(--neon-yellow)]"
-                      : "bg-[var(--neon-yellow)]/10 border border-[var(--neon-yellow)] text-[var(--neon-yellow)]"
-                  }`}
-                >
-                  {connectedMentorIds.includes(selectedMentor.id)
-                    ? "Connected ✓"
-                    : "Connect"}
-                </button>
-                <button
-                  onClick={() => setShowMessageForm(true)}
-                  className="px-6 py-3 bg-[var(--neon-yellow)] text-[var(--black)] rounded-xl font-semibold hover:shadow-lg hover:shadow-[var(--neon-yellow)]/20 transition-all"
-                >
-                  Send Message
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* Message Form Modal */}
-        {selectedMentor && showMessageForm && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
-            onClick={() => setShowMessageForm(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/30 rounded-2xl p-8 max-w-xl w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2 className="text-2xl font-heading font-bold text-white mb-6">
-                Send Message to {selectedMentor.name}
-              </h2>
-
-              <div className="space-y-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    value={messageSubject}
-                    onChange={(e) => setMessageSubject(e.target.value)}
-                    className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)]"
-                    placeholder="Introduction from a fellow athlete"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    value={messageContent}
-                    onChange={(e) => setMessageContent(e.target.value)}
-                    rows={6}
-                    className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)] resize-none"
-                    placeholder="Hi! I'm a current student-athlete interested in learning more about your career path..."
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setShowMessageForm(false)}
-                  className="px-6 py-3 border border-[var(--neon-yellow)]/40 text-[var(--neon-yellow)] rounded-xl font-semibold hover:bg-[var(--neon-yellow)]/10 transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSendMessage}
-                  disabled={!messageSubject || !messageContent}
-                  className="px-6 py-3 bg-[var(--neon-yellow)] text-[var(--black)] rounded-xl font-semibold hover:shadow-lg hover:shadow-[var(--neon-yellow)]/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-                >
-                  Send Message
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      <Footer />
+    </>
   );
 }

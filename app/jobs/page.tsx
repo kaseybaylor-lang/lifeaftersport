@@ -1,277 +1,320 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "@/contexts/AuthContext";
-import {
-  jobs as allJobs,
-  filterJobs,
-  saveJob,
-  unsaveJob,
-  isJobSaved,
-  type Job,
-} from "@/lib/jobs";
+import { useState } from "react";
 import Link from "next/link";
+import { Navbar, Footer } from "@/components/layout";
+import { jobs as allJobs, type Job } from "@/lib/jobs";
+
+/* Inline salary / applicant data keyed by job id */
+const jobMeta: Record<string, { salary: string; applicants: number }> = {
+  "1":  { salary: "$22/hr",        applicants: 84 },
+  "2":  { salary: "$55k - $70k",   applicants: 112 },
+  "3":  { salary: "$85k - $105k",  applicants: 203 },
+  "4":  { salary: "$18/hr",        applicants: 47 },
+  "5":  { salary: "$110k - $140k", applicants: 156 },
+  "6":  { salary: "$65k - $80k",   applicants: 38 },
+  "7":  { salary: "$70k - $90k",   applicants: 129 },
+  "8":  { salary: "$80k - $100k",  applicants: 91 },
+  "9":  { salary: "$24/hr",        applicants: 67 },
+  "10": { salary: "$16/hr",        applicants: 53 },
+  "11": { salary: "$50k - $65k",   applicants: 174 },
+  "12": { salary: "$45k - $60k",   applicants: 62 },
+  "13": { salary: "$55k - $75k",   applicants: 198 },
+  "14": { salary: "$20/hr",        applicants: 88 },
+};
+
+const TYPE_OPTIONS  = ["All", "Full-time", "Internship", "Part-time", "Contract"] as const;
+const INDUSTRY_OPTIONS = [
+  "All",
+  "Finance",
+  "Tech",
+  "Marketing",
+  "Sales",
+  "Consulting",
+  "Media",
+  "Sports Management",
+] as const;
+
+function formatDate(iso: string) {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function typeLabel(t: string) {
+  if (t === "full-time") return "Full-time";
+  if (t === "internship") return "Internship";
+  return t;
+}
 
 export default function JobsPage() {
-  const { user } = useAuth();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [industryFilter, setIndustryFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
-  const [remoteFilter, setRemoteFilter] = useState("all");
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-  const [savedJobIds, setSavedJobIds] = useState<string[]>([]);
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("All");
+  const [industryFilter, setIndustryFilter] = useState("All");
+  const [remoteOnly, setRemoteOnly] = useState(false);
 
-  // Load saved jobs from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("lifeaftersport_saved_jobs");
-      setSavedJobIds(saved ? JSON.parse(saved) : []);
+  const filtered = allJobs.filter((job) => {
+    if (search) {
+      const q = search.toLowerCase();
+      const match =
+        job.title.toLowerCase().includes(q) ||
+        job.company.toLowerCase().includes(q) ||
+        job.description.toLowerCase().includes(q);
+      if (!match) return false;
     }
-  }, []);
-
-  const filteredJobs = filterJobs(allJobs, {
-    industry: industryFilter,
-    type: typeFilter,
-    remote: remoteFilter,
-    search: searchTerm,
+    if (typeFilter !== "All") {
+      const mapped = typeFilter.toLowerCase();
+      if (job.type !== mapped) return false;
+    }
+    if (industryFilter !== "All") {
+      const ind = industryFilter.toLowerCase();
+      if (!job.industry.toLowerCase().includes(ind)) return false;
+    }
+    if (remoteOnly && job.remote !== "remote") return false;
+    return true;
   });
 
-  const toggleSaveJob = (jobId: string) => {
-    if (savedJobIds.includes(jobId)) {
-      unsaveJob(jobId);
-      setSavedJobIds(savedJobIds.filter((id) => id !== jobId));
-    } else {
-      saveJob(jobId);
-      setSavedJobIds([...savedJobIds, jobId]);
-    }
-  };
-
-  const industries = Array.from(new Set(allJobs.map((job) => job.industry)));
-
   return (
-    <div className="min-h-screen bg-[var(--black)] pt-24 pb-16">
-      <div className="content-container">
-        {/* Header */}
-        <div className="mb-12">
-          <Link href="/">
-            <div className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-4 inline-block cursor-pointer hover:underline">
-              ← BACK TO HOME
-            </div>
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-4">
-            Job & Internship Board
-          </h1>
-          <p className="text-[var(--text-secondary)] text-lg">
-            {filteredJobs.length} {filteredJobs.length === 1 ? "opportunity" : "opportunities"} for
-            student-athletes
-          </p>
-        </div>
+    <>
+      <Navbar />
 
-        {/* Filters & Search */}
-        <div className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Search */}
-            <input
-              type="text"
-              placeholder="Search jobs or companies..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:border-[var(--neon-yellow)]"
-            />
-
-            {/* Industry Filter */}
-            <select
-              value={industryFilter}
-              onChange={(e) => setIndustryFilter(e.target.value)}
-              className="px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)]"
-            >
-              <option value="all">All Industries</option>
-              {industries.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry}
-                </option>
-              ))}
-            </select>
-
-            {/* Type Filter */}
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)]"
-            >
-              <option value="all">All Types</option>
-              <option value="internship">Internship</option>
-              <option value="full-time">Full-Time</option>
-            </select>
-
-            {/* Remote Filter */}
-            <select
-              value={remoteFilter}
-              onChange={(e) => setRemoteFilter(e.target.value)}
-              className="px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-white focus:outline-none focus:border-[var(--neon-yellow)]"
-            >
-              <option value="all">All Locations</option>
-              <option value="remote">Remote</option>
-              <option value="hybrid">Hybrid</option>
-              <option value="on-site">On-Site</option>
-            </select>
+      {/* Page header */}
+      <div className="page-header">
+        <div className="page-header__inner">
+          <div className="eyebrow">
+            <span>Job Board</span>
           </div>
-        </div>
-
-        {/* Job Listings */}
-        <div className="grid gap-5">
-          {filteredJobs.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-[var(--text-secondary)] text-lg">
-                No jobs found. Try adjusting your filters.
-              </p>
-            </div>
-          ) : (
-            filteredJobs.map((job, index) => (
-              <motion.div
-                key={job.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 hover:border-[var(--neon-yellow)]/40 transition-all cursor-pointer"
-                onClick={() => setSelectedJob(job)}
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-heading font-bold text-white">
-                        {job.title}
-                      </h3>
-                      {job.athleteFriendly && (
-                        <span className="px-3 py-1 bg-[var(--neon-yellow)]/10 border border-[var(--neon-yellow)]/30 text-[var(--neon-yellow)] text-xs font-semibold rounded-full">
-                          Athlete-Friendly
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[var(--text-primary)] font-semibold mb-2">
-                      {job.company}
-                    </p>
-                    <div className="flex flex-wrap gap-3 text-sm text-[var(--text-secondary)]">
-                      <span>📍 {job.location}</span>
-                      <span>💼 {job.type === "internship" ? "Internship" : "Full-Time"}</span>
-                      <span>🏢 {job.remote === "remote" ? "Remote" : job.remote === "hybrid" ? "Hybrid" : "On-Site"}</span>
-                      <span>🏷️ {job.industry}</span>
-                    </div>
-                  </div>
-
-                  {/* Bookmark Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleSaveJob(job.id);
-                    }}
-                    className="text-2xl hover:scale-110 transition-transform"
-                  >
-                    {savedJobIds.includes(job.id) ? "🔖" : "📌"}
-                  </button>
-                </div>
-              </motion.div>
-            ))
-          )}
+          <h1>Find your next role.</h1>
+          <p>
+            Browse athlete-friendly positions from companies that value discipline,
+            teamwork, and the competitive mindset you bring from sport.
+          </p>
         </div>
       </div>
 
-      {/* Job Detail Modal */}
-      <AnimatePresence>
-        {selectedJob && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm"
-            onClick={() => setSelectedJob(null)}
+      {/* Main content */}
+      <div className="section">
+        <div className="container">
+          <div
+            style={{
+              display: "flex",
+              gap: 32,
+              alignItems: "flex-start",
+            }}
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/30 rounded-2xl p-10 md:p-12 max-w-3xl w-full max-h-[85vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
+            {/* ── Sidebar ── */}
+            <aside
+              style={{
+                width: 256,
+                flexShrink: 0,
+                position: "sticky",
+                top: 96,
+              }}
+              className="card card--lg"
             >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedJob(null)}
-                className="float-right text-white/40 hover:text-white text-2xl"
+              <h3
+                style={{
+                  fontSize: 13,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: 24,
+                  color: "var(--text-strong)",
+                }}
               >
-                ✕
-              </button>
+                Filters
+              </h3>
 
-              {/* Job Details */}
-              <div className="mb-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <h2 className="text-3xl font-heading font-bold text-white">
-                    {selectedJob.title}
-                  </h2>
-                  {selectedJob.athleteFriendly && (
-                    <span className="px-3 py-1 bg-[var(--neon-yellow)]/10 border border-[var(--neon-yellow)]/30 text-[var(--neon-yellow)] text-xs font-semibold rounded-full">
-                      Athlete-Friendly
-                    </span>
-                  )}
-                </div>
-                <p className="text-xl text-[var(--text-primary)] font-semibold mb-4">
-                  {selectedJob.company}
-                </p>
-                <div className="flex flex-wrap gap-4 text-sm text-[var(--text-secondary)] mb-6">
-                  <span>📍 {selectedJob.location}</span>
-                  <span>💼 {selectedJob.type === "internship" ? "Internship" : "Full-Time"}</span>
-                  <span>🏢 {selectedJob.remote === "remote" ? "Remote" : selectedJob.remote === "hybrid" ? "Hybrid" : "On-Site"}</span>
-                  <span>🏷️ {selectedJob.industry}</span>
-                </div>
+              {/* Search */}
+              <div style={{ marginBottom: 20 }}>
+                <label className="field-label">Search</label>
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Title, company..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
 
-              {/* Description */}
-              <div className="mb-6">
-                <h3 className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-3">
-                  DESCRIPTION
-                </h3>
-                <p className="text-[var(--text-primary)] leading-relaxed">
-                  {selectedJob.description}
-                </p>
-              </div>
-
-              {/* Requirements */}
-              <div className="mb-8">
-                <h3 className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-3">
-                  REQUIREMENTS
-                </h3>
-                <ul className="space-y-2">
-                  {selectedJob.requirements.map((req, i) => (
-                    <li key={i} className="flex items-start gap-3 text-[var(--text-primary)]">
-                      <span className="text-[var(--neon-yellow)] mt-1">•</span>
-                      <span>{req}</span>
-                    </li>
+              {/* Type */}
+              <div style={{ marginBottom: 20 }}>
+                <label className="field-label">Type</label>
+                <select
+                  className="select"
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                >
+                  {TYPE_OPTIONS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
                   ))}
-                </ul>
+                </select>
               </div>
 
-              {/* Actions */}
-              <div className="flex gap-4">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleSaveJob(selectedJob.id);
-                  }}
-                  className="px-6 py-3 border border-[var(--neon-yellow)]/40 text-[var(--neon-yellow)] rounded-xl font-semibold hover:bg-[var(--neon-yellow)]/10 transition-all"
+              {/* Industry */}
+              <div style={{ marginBottom: 20 }}>
+                <label className="field-label">Industry</label>
+                <select
+                  className="select"
+                  value={industryFilter}
+                  onChange={(e) => setIndustryFilter(e.target.value)}
                 >
-                  {savedJobIds.includes(selectedJob.id) ? "Unsave Job" : "Save Job"}
-                </button>
-                <a
-                  href="#"
-                  className="px-6 py-3 bg-[var(--neon-yellow)] text-[var(--black)] rounded-xl font-semibold hover:shadow-lg hover:shadow-[var(--neon-yellow)]/20 transition-all"
-                >
-                  Apply Now →
-                </a>
+                  {INDUSTRY_OPTIONS.map((i) => (
+                    <option key={i} value={i}>
+                      {i}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+
+              {/* Remote only */}
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={remoteOnly}
+                  onChange={(e) => setRemoteOnly(e.target.checked)}
+                />
+                Remote only
+              </label>
+            </aside>
+
+            {/* ── Content ── */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              {/* Results counter */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  marginBottom: 24,
+                }}
+              >
+                <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+                  Showing {filtered.length} of {allJobs.length} jobs
+                </span>
+                <span className="badge badge--yellow">All athlete-friendly</span>
+              </div>
+
+              {/* Job cards grid */}
+              {filtered.length === 0 ? (
+                <div
+                  className="card"
+                  style={{
+                    textAlign: "center",
+                    padding: 64,
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  No jobs match your filters. Try adjusting your search.
+                </div>
+              ) : (
+                <div className="grid grid--2">
+                  {filtered.map((job) => {
+                    const meta = jobMeta[job.id] || {
+                      salary: "Competitive",
+                      applicants: 0,
+                    };
+                    return (
+                      <Link key={job.id} href={`/jobs/${job.id}`}>
+                        <div className="card card--interactive" style={{ height: "100%" }}>
+                          {/* Company */}
+                          <p
+                            style={{
+                              fontSize: 12,
+                              textTransform: "uppercase",
+                              letterSpacing: "0.1em",
+                              color: "var(--text-muted)",
+                              marginBottom: 4,
+                            }}
+                          >
+                            {job.company}
+                          </p>
+
+                          {/* Title + badge */}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                              justifyContent: "space-between",
+                              gap: 8,
+                              marginBottom: 12,
+                            }}
+                          >
+                            <h3
+                              style={{
+                                fontSize: 18,
+                                lineHeight: 1.2,
+                                color: "var(--text-strong)",
+                              }}
+                            >
+                              {job.title}
+                            </h3>
+                            {job.athleteFriendly && (
+                              <span className="badge badge--yellow" style={{ flexShrink: 0 }}>
+                                Athlete-friendly
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Badges row */}
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: 6,
+                              marginBottom: 12,
+                            }}
+                          >
+                            <span className="badge">{typeLabel(job.type)}</span>
+                            <span className="badge">{job.location}</span>
+                            <span className="badge">{job.industry}</span>
+                          </div>
+
+                          {/* Description (2 lines) */}
+                          <p
+                            style={{
+                              fontSize: 14,
+                              color: "var(--text-muted)",
+                              lineHeight: 1.5,
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              marginBottom: 16,
+                            }}
+                          >
+                            {job.description}
+                          </p>
+
+                          {/* Footer row */}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              fontSize: 12,
+                              color: "var(--text-subtle)",
+                              borderTop: "1px solid var(--border)",
+                              paddingTop: 12,
+                              marginTop: "auto",
+                            }}
+                          >
+                            <span>{formatDate(job.postedDate)}</span>
+                            <span style={{ color: "var(--text-muted)" }}>{meta.salary}</span>
+                            <span>{meta.applicants} applicants</span>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+    </>
   );
 }

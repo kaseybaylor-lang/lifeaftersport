@@ -1,127 +1,199 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import Button from "@/components/ui/Button";
+import { Navbar, Footer } from "@/components/layout";
 import Link from "next/link";
+
+type Role = "athlete" | "mentor" | "employer";
+
+const roleLabels: Record<Role, string> = {
+  athlete: "Student-Athlete",
+  mentor: "Mentor",
+  employer: "Employer",
+};
 
 export default function SignInPage() {
   const router = useRouter();
   const { signIn } = useAuth();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [role, setRole] = useState<Role>("athlete");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
-    const success = signIn(formData.email, formData.password);
-
+    const success = signIn(email, password);
     if (success) {
-      router.push("/");
+      router.push("/dashboard");
     } else {
       setError("Invalid email or password. Please try again.");
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   return (
-    <div className="min-h-screen bg-[var(--black)] flex items-center justify-center px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+    <>
+      <Navbar />
+      <main
+        className="section"
+        style={{
+          paddingTop: 160,
+          display: "flex",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
       >
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/">
-            <h1 className="font-heading font-bold text-2xl text-[var(--neon-yellow)] mb-2 cursor-pointer">
-              LIFE AFTER SPORT
-            </h1>
-          </Link>
-          <p className="text-[var(--text-secondary)]">Welcome back!</p>
-        </div>
+        <div style={{ width: "100%", maxWidth: 440 }}>
+          {/* Eyebrow */}
+          <div className="eyebrow">
+            <span>Sign in as {roleLabels[role]}</span>
+          </div>
 
-        {/* Form Card */}
-        <div className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/20 rounded-2xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
-                <p className="text-red-400 text-sm">{error}</p>
-              </div>
-            )}
+          {/* Heading */}
+          <h1
+            style={{
+              fontSize: 48,
+              lineHeight: 0.95,
+              marginBottom: 12,
+              fontFamily: "var(--font-oswald)",
+            }}
+          >
+            Welcome back.
+          </h1>
+          <p className="text-muted" style={{ marginBottom: 32 }}>
+            Pick up where you left off.
+          </p>
 
-            {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+          {/* Role selector */}
+          <div className="grid grid--3" style={{ gap: 8, marginBottom: 32 }}>
+            {(["athlete", "mentor", "employer"] as Role[]).map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setRole(r)}
+                className={r === role ? "btn btn--md btn--primary" : "btn btn--md btn--secondary"}
+                style={{ width: "100%" }}
               >
-                Email Address
+                {roleLabels[r]}
+              </button>
+            ))}
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div
+              className="card"
+              style={{
+                background: "rgba(248,113,113,0.08)",
+                borderColor: "rgba(248,113,113,0.3)",
+                marginBottom: 24,
+                padding: 16,
+              }}
+            >
+              <p style={{ color: "var(--danger)", fontSize: 14 }}>{error}</p>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: 20 }}>
+              <label className="field-label" htmlFor="email">
+                Email
               </label>
               <input
+                className="input"
                 type="email"
                 id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
+                required
               />
             </div>
 
-            {/* Password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-              >
+            <div style={{ marginBottom: 20 }}>
+              <label className="field-label" htmlFor="password">
                 Password
               </label>
               <input
+                className="input"
                 type="password"
                 id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
+                required
               />
             </div>
 
-            {/* Submit Button */}
-            <Button variant="primary" className="w-full mt-6" type="submit">
+            {/* Remember + Forgot */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 28,
+              }}
+            >
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Remember me
+              </label>
+              <Link
+                href="#"
+                className="text-accent"
+                style={{ fontSize: 14, fontWeight: 500 }}
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Submit */}
+            <button type="submit" className="btn btn--primary btn--lg btn--full">
               Sign In
-            </Button>
+            </button>
           </form>
 
-          {/* Register Link */}
-          <p className="text-center text-[var(--text-secondary)] mt-6">
-            Don't have an account?{" "}
+          {/* Demo notice */}
+          <p
+            className="text-subtle"
+            style={{
+              fontSize: 13,
+              textAlign: "center",
+              marginTop: 20,
+            }}
+          >
+            Demo mode: any email/password will sign you in
+          </p>
+
+          {/* Footer link */}
+          <p
+            className="text-muted"
+            style={{
+              textAlign: "center",
+              marginTop: 32,
+              fontSize: 14,
+            }}
+          >
+            New here?{" "}
             <Link
               href="/register"
-              className="text-[var(--neon-yellow)] hover:underline font-medium"
+              className="text-accent"
+              style={{ fontWeight: 500 }}
             >
-              Sign Up
+              Create an account
             </Link>
           </p>
         </div>
-      </motion.div>
-    </div>
+      </main>
+      <Footer />
+    </>
   );
 }

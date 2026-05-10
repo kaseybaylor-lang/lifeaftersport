@@ -1,210 +1,213 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Button from "@/components/ui/Button";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const navLinks = [
-  { name: "Programs", href: "/programs", isPage: true },
+  { name: "Programs", href: "/programs" },
+  { name: "Jobs", href: "/jobs" },
+  { name: "Mentors", href: "/mentors" },
+  { name: "Resources", href: "/resources" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <>
-      <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "backdrop-blur-md bg-[var(--background-dark)]/80 shadow-lg"
-            : "bg-transparent"
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="content-container py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href={user ? "/dashboard" : "/"}>
-              <span
-                className="font-[family-name:var(--font-oswald)] font-bold text-[var(--neon-yellow)] uppercase text-xl tracking-tight cursor-pointer"
-                style={{ fontFamily: "var(--font-oswald)" }}
+      <header className="navbar">
+        <div className="navbar__inner">
+          <Link
+            href={user ? "/dashboard" : "/"}
+            style={{
+              fontFamily: "var(--font-oswald), Impact, sans-serif",
+              fontSize: 18,
+              letterSpacing: "-0.02em",
+              textTransform: "uppercase",
+              color: "var(--text)",
+              fontWeight: 600,
+            }}
+          >
+            Life After Sport<span style={{ color: "var(--accent)" }}>.</span>
+          </Link>
+
+          <nav
+            style={{
+              display: "none",
+              gap: 32,
+              fontSize: 14,
+            }}
+            className="md:!flex"
+          >
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                style={{
+                  color: "var(--text)",
+                  transition: "color 0.15s",
+                }}
+                className="hover:!text-[var(--accent)]"
               >
-                LIFE AFTER SPORT
-              </span>
-            </Link>
+                {link.name}
+              </Link>
+            ))}
+          </nav>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="font-[family-name:var(--font-jakarta)] transition-colors duration-200 text-[var(--text-primary)] hover:text-[var(--neon-yellow)]"
-                  style={{ fontFamily: "var(--font-jakarta)" }}
-                >
-                  {link.name}
+          <div
+            style={{
+              display: "none",
+              alignItems: "center",
+              gap: 8,
+            }}
+            className="md:!flex"
+          >
+            {user ? (
+              <>
+                <Link href="/dashboard" className="btn btn--primary btn--sm">
+                  Dashboard
                 </Link>
-              ))}
-              {user ? (
-                <div className="flex items-center gap-3 ml-4">
-                  <Button variant="primary" href="/dashboard">
-                    Dashboard
-                  </Button>
-                  <span className="text-[var(--text-primary)] text-sm">
-                    <span className="text-[var(--neon-yellow)] font-bold">{user.name.split(' ')[0]}</span>
-                  </span>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      signOut();
-                      router.push('/');
-                    }}
-                  >
-                    Logout
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 ml-4">
-                  <Button variant="outline" href="/signin">
-                    Sign In
-                  </Button>
-                  <Button variant="primary" href="/register">
-                    Sign Up
-                  </Button>
-                </div>
-              )}
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden text-[var(--neon-yellow)] text-3xl"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? "✕" : "☰"}
-            </button>
+                <button
+                  onClick={() => {
+                    signOut();
+                    router.push("/");
+                  }}
+                  style={{
+                    fontSize: 14,
+                    color: "var(--text)",
+                    padding: "8px 12px",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    fontFamily: "inherit",
+                    transition: "color 0.15s",
+                  }}
+                  className="hover:!text-[var(--accent)]"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/signin"
+                  style={{
+                    fontSize: 14,
+                    color: "var(--text)",
+                    padding: "8px 12px",
+                    cursor: "pointer",
+                    transition: "color 0.15s",
+                  }}
+                  className="hover:!text-[var(--accent)]"
+                >
+                  Sign In
+                </Link>
+                <Link href="/register" className="btn btn--primary btn--sm">
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
+
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{
+              background: "none",
+              border: "none",
+              color: "var(--text)",
+              fontSize: 24,
+              cursor: "pointer",
+            }}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? "\u2715" : "\u2630"}
+          </button>
         </div>
-      </motion.nav>
+      </header>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      {isMobileMenuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 64,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 40,
+            background: "rgba(0,0,0,0.95)",
+            backdropFilter: "blur(16px)",
+            padding: 24,
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
-            />
-
-            {/* Menu Panel */}
-            <motion.div
-              className="absolute top-0 right-0 bottom-0 w-4/5 max-w-sm bg-[var(--background-card)] shadow-2xl"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25 }}
+              style={{
+                display: "block",
+                padding: "12px 0",
+                fontSize: 18,
+                color: "var(--text)",
+                borderBottom: "1px solid #1f1f1f",
+              }}
             >
-              <div className="flex flex-col h-full p-8 pt-20">
-                {/* Close button positioned */}
-                <button
-                  className="absolute top-6 right-6 text-[var(--neon-yellow)] text-3xl"
+              {link.name}
+            </Link>
+          ))}
+          <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 12 }}>
+            {user ? (
+              <>
+                <Link
+                  href="/dashboard"
+                  className="btn btn--primary btn--lg btn--full"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  aria-label="Close menu"
                 >
-                  ✕
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    signOut();
+                    router.push("/");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="btn btn--secondary btn--lg btn--full"
+                >
+                  Sign Out
                 </button>
-
-                {/* Navigation Links */}
-                <div className="flex flex-col gap-6 mb-8">
-                  {navLinks.map((link, index) => (
-                    <motion.div
-                      key={link.name}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="font-[family-name:var(--font-oswald)] font-[600] uppercase text-2xl text-left transition-colors duration-200 text-[var(--text-primary)] hover:text-[var(--neon-yellow)] block"
-                        style={{ fontFamily: "var(--font-oswald)" }}
-                      >
-                        {link.name}
-                      </Link>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {user ? (
-                  <div className="space-y-3">
-                    <p className="text-[var(--text-primary)] text-center mb-2">
-                      Welcome, <span className="text-[var(--neon-yellow)] font-bold">{user.name}</span>
-                    </p>
-                    <Button variant="primary" href="/dashboard" className="w-full">
-                      Dashboard
-                    </Button>
-                    <Button variant="outline" href="/jobs" className="w-full">
-                      Jobs
-                    </Button>
-                    <Button variant="outline" href="/mentors" className="w-full">
-                      Mentors
-                    </Button>
-                    <Button variant="outline" href="/messages" className="w-full">
-                      Messages
-                    </Button>
-                    <Button variant="outline" href="/quiz" className="w-full">
-                      Career Quiz
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={() => {
-                        signOut();
-                        router.push('/');
-                        setIsMobileMenuOpen(false);
-                      }}
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <Button variant="outline" href="/signin" className="w-full">
-                      Sign In
-                    </Button>
-                    <Button variant="primary" href="/register" className="w-full">
-                      Sign Up
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/signin"
+                  className="btn btn--secondary btn--lg btn--full"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn btn--primary btn--lg btn--full"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

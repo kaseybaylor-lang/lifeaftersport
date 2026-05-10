@@ -8,6 +8,7 @@ export interface User {
   university: string;
   graduationYear: string;
   status: 'current-athlete' | 'recent-alum';
+  role?: 'student' | 'mentor' | 'employer';
 }
 
 const AUTH_STORAGE_KEY = 'lifeaftersport_auth';
@@ -20,10 +21,11 @@ export const auth = {
       id: crypto.randomUUID(),
       name: userData.name,
       email: userData.email,
-      sport: userData.sport,
-      university: userData.university,
-      graduationYear: userData.graduationYear,
-      status: userData.status,
+      sport: userData.sport || "",
+      university: userData.university || "",
+      graduationYear: userData.graduationYear || "",
+      status: userData.status || "current-athlete",
+      role: userData.role || "student",
     };
 
     // In a real app, you'd hash the password. For demo, just store email/password combo
@@ -38,22 +40,27 @@ export const auth = {
     return user;
   },
 
-  // Sign in existing user
-  signIn: (email: string, password: string): User | null => {
-    const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+  // Sign in existing user (demo mode: any email/password works)
+  signIn: (email: string, _password: string): User | null => {
     const userStored = localStorage.getItem(USER_STORAGE_KEY);
 
-    if (!stored || !userStored) {
-      return null;
-    }
-
-    const credentials = JSON.parse(stored);
-
-    if (credentials.email === email && credentials.password === password) {
+    if (userStored) {
       return JSON.parse(userStored);
     }
 
-    return null;
+    // Demo mode: create a default user for any credentials
+    const demoUser: User = {
+      id: crypto.randomUUID(),
+      name: "Marcus Thompson",
+      email: email,
+      sport: "Football",
+      university: "University of Michigan",
+      graduationYear: "2026",
+      status: "current-athlete",
+      role: "student",
+    };
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(demoUser));
+    return demoUser;
   },
 
   // Get current user

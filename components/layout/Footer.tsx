@@ -2,73 +2,105 @@
 
 import Link from "next/link";
 
-const linksCol1 = [
-  { name: "Programs", href: "/programs" },
-  { name: "Resources", href: "/resources" },
-];
-
-const linksCol2 = [
-  { name: "Jobs", href: "/jobs" },
-  { name: "Mentors", href: "/mentors" },
-  { name: "Get Involved", href: "/contact" },
-];
-
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
-    <footer className="bg-[var(--background-card)] border-t border-[var(--text-secondary)]/20">
-      <div className="content-container py-20 md:py-24">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 mb-16">
-          {/* Left - Logo & Tagline */}
+    <footer className="footer">
+      <div className="footer__inner">
+        <div className="footer__grid">
           <div>
-            <button
-              onClick={scrollToTop}
-              className="flex items-center gap-2 mb-4 group"
+            <Link
+              href="/"
+              style={{
+                fontFamily: "var(--font-oswald), Impact, sans-serif",
+                fontSize: 24,
+                letterSpacing: "-0.02em",
+                textTransform: "uppercase",
+                color: "var(--text)",
+                fontWeight: 600,
+                marginBottom: 16,
+                display: "inline-block",
+              }}
             >
-              <span className="text-[var(--primary-yellow)] text-2xl group-hover:scale-110 transition-transform">
-                ⟡
-              </span>
-              <span
-                className="font-[family-name:var(--font-oswald)] font-[800] text-[var(--primary-yellow)] uppercase text-xl tracking-tight"
-                style={{ fontFamily: "var(--font-oswald)" }}
-              >
-                Life After Sport
-              </span>
-            </button>
+              Life After Sport<span style={{ color: "var(--accent)" }}>.</span>
+            </Link>
             <p
-              className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] italic"
-              style={{ fontFamily: "var(--font-jakarta)" }}
+              style={{
+                fontSize: 14,
+                color: "var(--text-muted)",
+                maxWidth: 360,
+                lineHeight: 1.6,
+              }}
             >
-              Your Next Play Starts Here.
+              The career platform built for student-athletes transitioning out of
+              competitive sports. Your next play starts here.
             </p>
           </div>
-
-          {/* Right - Links in Two Columns */}
-          <div className="grid grid-cols-2 gap-8">
-            <ul className="space-y-3">
-              {linksCol1.map((link) => (
-                <li key={link.name}>
+          <div>
+            <h4
+              style={{
+                fontSize: 11,
+                textTransform: "uppercase",
+                letterSpacing: "0.2em",
+                color: "var(--accent)",
+                marginBottom: 16,
+                fontWeight: 500,
+                fontFamily: "inherit",
+              }}
+            >
+              Platform
+            </h4>
+            <ul style={{ listStyle: "none" }}>
+              {[
+                { name: "Programs", href: "/programs" },
+                { name: "Jobs", href: "/jobs" },
+                { name: "Mentors", href: "/mentors" },
+                { name: "Resources", href: "/resources" },
+              ].map((link) => (
+                <li key={link.name} style={{ marginBottom: 12 }}>
                   <Link
                     href={link.href}
-                    className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] hover:text-[var(--primary-yellow)] transition-colors"
-                    style={{ fontFamily: "var(--font-jakarta)" }}
+                    style={{
+                      fontSize: 14,
+                      color: "var(--text-muted)",
+                      transition: "color 0.15s",
+                    }}
+                    className="hover:!text-[var(--text)]"
                   >
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-            <ul className="space-y-3">
-              {linksCol2.map((link) => (
-                <li key={link.name}>
+          </div>
+          <div>
+            <h4
+              style={{
+                fontSize: 11,
+                textTransform: "uppercase",
+                letterSpacing: "0.2em",
+                color: "var(--accent)",
+                marginBottom: 16,
+                fontWeight: 500,
+                fontFamily: "inherit",
+              }}
+            >
+              For Organizations
+            </h4>
+            <ul style={{ listStyle: "none" }}>
+              {[
+                { name: "For Universities", href: "/contact?type=university" },
+                { name: "For Employers", href: "/contact?type=employer" },
+                { name: "Book a Demo", href: "/contact" },
+              ].map((link) => (
+                <li key={link.name} style={{ marginBottom: 12 }}>
                   <Link
                     href={link.href}
-                    className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] hover:text-[var(--primary-yellow)] transition-colors"
-                    style={{ fontFamily: "var(--font-jakarta)" }}
+                    style={{
+                      fontSize: 14,
+                      color: "var(--text-muted)",
+                      transition: "color 0.15s",
+                    }}
+                    className="hover:!text-[var(--text)]"
                   >
                     {link.name}
                   </Link>
@@ -76,17 +108,59 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="pt-8 border-t border-[var(--text-secondary)]/20">
-            <p
-              className="font-[family-name:var(--font-jakarta)] text-[var(--text-secondary)] text-sm text-center"
-              style={{ fontFamily: "var(--font-jakarta)" }}
+          <div>
+            <h4
+              style={{
+                fontSize: 11,
+                textTransform: "uppercase",
+                letterSpacing: "0.2em",
+                color: "var(--accent)",
+                marginBottom: 16,
+                fontWeight: 500,
+                fontFamily: "inherit",
+              }}
             >
-              © 2025 Life After Sport. Built by Kasey, Ella & Kenny.
-            </p>
+              Company
+            </h4>
+            <ul style={{ listStyle: "none" }}>
+              {[
+                { name: "About", href: "/about" },
+                { name: "Contact", href: "/contact" },
+                { name: "Privacy", href: "/privacy" },
+                { name: "Terms", href: "/terms" },
+              ].map((link) => (
+                <li key={link.name} style={{ marginBottom: 12 }}>
+                  <Link
+                    href={link.href}
+                    style={{
+                      fontSize: 14,
+                      color: "var(--text-muted)",
+                      transition: "color 0.15s",
+                    }}
+                    className="hover:!text-[var(--text)]"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
+        </div>
+        <div
+          style={{
+            paddingTop: 32,
+            borderTop: "1px solid #1f1f1f",
+            display: "flex",
+            flexDirection: "column",
+            gap: 16,
+            justifyContent: "space-between",
+            fontSize: 12,
+            color: "var(--text-subtle)",
+          }}
+          className="md:!flex-row md:!items-center"
+        >
+          <div>&copy; 2026 Life After Sport. Built by Kasey, Ella &amp; Kenny.</div>
+          <div>Your Next Play Starts Here.</div>
         </div>
       </div>
     </footer>

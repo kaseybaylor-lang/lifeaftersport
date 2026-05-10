@@ -1,298 +1,327 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { getStoredQuizResults } from "@/lib/quiz";
-import { getSavedJobs } from "@/lib/jobs";
-import { getConnectedMentors, getUnreadCount } from "@/lib/mentors";
 import Link from "next/link";
 
-export default function DashboardPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [quizResults, setQuizResults] = useState<any>(null);
-  const [savedJobsCount, setSavedJobsCount] = useState(0);
-  const [connectedMentorsCount, setConnectedMentorsCount] = useState(0);
-  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-  const [profileCompletion, setProfileCompletion] = useState(0);
+const studentNav = [
+  { icon: "\u25A3", label: "Dashboard", href: "/dashboard", active: true },
+  { icon: "\uD83C\uDFAF", label: "My Mentors", href: "/mentors" },
+  { icon: "\uD83D\uDCBC", label: "Saved Jobs", href: "/jobs" },
+  { icon: "\uD83D\uDCCB", label: "Applications", href: "/jobs" },
+  { icon: "\u2709", label: "Messages", href: "/messages", badge: 2 },
+  { icon: "\uD83D\uDC64", label: "Profile", href: "/dashboard" },
+];
 
-  // Redirect if not authenticated
+export default function DashboardPage() {
+  const { user, loading, signOut } = useAuth();
+  const router = useRouter();
+
   useEffect(() => {
     if (!loading && !user) {
       router.push("/signin");
     }
   }, [user, loading, router]);
 
-  // Load dashboard data
-  useEffect(() => {
-    if (typeof window !== "undefined" && user) {
-      const results = getStoredQuizResults();
-      setQuizResults(results);
-
-      const savedJobs = getSavedJobs();
-      setSavedJobsCount(savedJobs.length);
-
-      const connected = getConnectedMentors();
-      setConnectedMentorsCount(connected.length);
-
-      const unread = getUnreadCount();
-      setUnreadMessagesCount(unread);
-
-      // Calculate profile completion
-      let completion = 40; // Base (has account)
-      if (results) completion += 30; // Completed quiz
-      if (savedJobs.length > 0) completion += 15; // Saved jobs
-      if (connected.length > 0) completion += 15; // Connected mentors
-
-      setProfileCompletion(completion);
-    }
-  }, [user]);
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--black)] flex items-center justify-center">
-        <div className="text-[var(--neon-yellow)] text-xl">Loading...</div>
+      <div style={{ minHeight: "100vh", background: "#000", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ color: "var(--accent)", fontSize: 18 }}>Loading...</div>
       </div>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
-  const quickActions = [
-    {
-      title: "Career Quiz",
-      description: quizResults
-        ? "Retake your career assessment"
-        : "Discover your ideal career path",
-      href: "/quiz",
-      icon: "📋",
-      variant: quizResults ? "outline" : "primary",
-    },
-    {
-      title: "Browse Jobs",
-      description: `${savedJobsCount} saved ${savedJobsCount === 1 ? 'job' : 'jobs'}`,
-      href: "/jobs",
-      icon: "💼",
-      variant: "outline",
-    },
-    {
-      title: "Find Mentors",
-      description: `${connectedMentorsCount} ${connectedMentorsCount === 1 ? 'connection' : 'connections'}`,
-      href: "/mentors",
-      icon: "👥",
-      variant: "outline",
-    },
-    {
-      title: "Messages",
-      description:
-        unreadMessagesCount > 0
-          ? `${unreadMessagesCount} unread ${unreadMessagesCount === 1 ? 'message' : 'messages'}`
-          : "No new messages",
-      href: "/messages",
-      icon: "💬",
-      variant: "outline",
-    },
-  ];
+  const firstName = user.name?.split(" ")[0] || "Athlete";
+  const initials = user.name
+    ? user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
+    : "U";
+  const roleName = user.role === "mentor" ? "Mentor" : user.role === "employer" ? "Employer" : "Student-Athlete";
 
   return (
-    <div className="min-h-screen bg-[var(--black)] pt-40 pb-20">
-      <div className="content-container">
-        {/* Welcome Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-16"
-        >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-4">
-            Welcome back, <span className="text-[var(--neon-yellow)]">{user.name.split(' ')[0]}</span>!
-          </h1>
-          <p className="text-xl md:text-2xl text-[var(--text-secondary)]">
-            Former {user.sport} athlete • Class of {user.graduationYear}
-          </p>
-        </motion.div>
+    <div className="dashboard-layout">
+      {/* Sidebar */}
+      <aside className="dashboard-sidebar">
+        <div className="dashboard-sidebar__brand">
+          <Link
+            href="/"
+            style={{
+              fontFamily: "var(--font-oswald), Impact, sans-serif",
+              fontSize: 18,
+              letterSpacing: "-0.02em",
+              textTransform: "uppercase",
+              color: "#c8c8c8",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            Life After Sport<span style={{ color: "var(--accent)" }}>.</span>
+          </Link>
+          <div className="dashboard-sidebar__role">{roleName}</div>
+        </div>
+        <nav className="dashboard-sidebar__nav">
+          {studentNav.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`dashboard-sidebar__nav-item${item.active ? " active" : ""}`}
+            >
+              <span className="dashboard-sidebar__nav-item-left">
+                <span className="dashboard-sidebar__nav-icon">{item.icon}</span>
+                <span>{item.label}</span>
+              </span>
+              {item.badge && (
+                <span className="dashboard-sidebar__nav-badge">{item.badge}</span>
+              )}
+            </Link>
+          ))}
+        </nav>
+        <div className="dashboard-sidebar__user">
+          <div className="dashboard-sidebar__user-info">
+            <div className="avatar avatar--md">{initials}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 500, color: "var(--text)" }}>{user.name}</div>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", textTransform: "capitalize" }}>{user.role || "Student"}</div>
+            </div>
+          </div>
+          <button
+            onClick={() => { signOut(); router.push("/"); }}
+            style={{
+              display: "block",
+              fontSize: 14,
+              color: "#a1a1a1",
+              padding: "8px 12px",
+              borderRadius: 8,
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontFamily: "inherit",
+              width: "100%",
+              textAlign: "left",
+            }}
+          >
+            &larr; Sign out
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="dashboard-main">
+        {/* Header */}
+        <div className="dashboard-header">
+          <div>
+            <h1>Welcome back, {firstName}.</h1>
+            <p>You have 1 upcoming session and 1 active application.</p>
+          </div>
+          <Link href="/quiz" className="btn btn--secondary btn--md">
+            Retake Career Quiz &rarr;
+          </Link>
+        </div>
 
         {/* Profile Completion */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8 mb-20"
+        <div
+          className="card card--lg"
+          style={{
+            borderColor: "rgba(250,204,21,0.3)",
+            background: "rgba(250,204,21,0.03)",
+            marginBottom: 32,
+          }}
         >
-          <div className="flex items-center justify-between mb-4">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: 16, gap: 16, flexWrap: "wrap" }}>
             <div>
-              <h3 className="text-2xl font-heading font-bold text-white mb-2">
+              <div style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.15em", color: "var(--accent)", marginBottom: 8, fontWeight: 500 }}>
                 Profile Completion
-              </h3>
-              <p className="text-base text-[var(--text-secondary)]">
-                {profileCompletion < 100
-                  ? "Complete your profile to unlock all features"
-                  : "Your profile is complete!"}
+              </div>
+              <h3 style={{ fontSize: 24, marginBottom: 4 }}>Your profile is 75% complete.</h3>
+              <p style={{ fontSize: 14, color: "var(--text-muted)" }}>
+                A complete profile gets 3x more mentor responses and 2x more job interviews.
               </p>
             </div>
-            <div className="text-5xl font-heading font-bold text-[var(--neon-yellow)]">
-              {profileCompletion}%
+            <Link href="/dashboard" className="btn btn--primary btn--md">
+              Complete Profile &rarr;
+            </Link>
+          </div>
+          <div className="progress-bar">
+            <div className="progress-bar__fill" style={{ width: "75%" }} />
+          </div>
+        </div>
+
+        {/* Stat Boxes */}
+        <div className="grid grid--4" style={{ gap: 16, marginBottom: 32 }}>
+          {[
+            { label: "Mentor Sessions", value: "3", sub: "2 this month", accent: false },
+            { label: "Applications", value: "1", sub: "In review", accent: true },
+            { label: "Saved Jobs", value: "7", sub: "3 closing soon", accent: false },
+            { label: "Resources", value: "12", sub: "Read this month", accent: false },
+          ].map((stat) => (
+            <div key={stat.label} className={`stat-box${stat.accent ? " stat-box--accent" : ""}`}>
+              <div className="stat-box__label">{stat.label}</div>
+              <div className="stat-box__value">{stat.value}</div>
+              <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 4 }}>{stat.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Upcoming Session + Active Application */}
+        <div className="grid grid--2" style={{ marginBottom: 32 }}>
+          {/* Next Session */}
+          <div className="card card--lg">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.15em", color: "var(--text-muted)", fontWeight: 500 }}>
+                Next Session
+              </div>
+              <span className="badge badge--yellow">Tomorrow</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "start", gap: 16, marginBottom: 16 }}>
+              <div className="avatar avatar--lg">DC</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 600, color: "#c8c8c8", fontSize: 16 }}>David Chen</div>
+                <div style={{ fontSize: 14, color: "var(--text-muted)" }}>VP of Strategy &middot; Goldman Sachs</div>
+                <div style={{ fontSize: 14, color: "var(--accent)", marginTop: 8 }}>Tomorrow &middot; 4:00 PM EST &middot; 30 min</div>
+              </div>
+            </div>
+            <div
+              style={{
+                fontSize: 14,
+                color: "var(--text-muted)",
+                padding: "12px 16px",
+                background: "#0a0a0a",
+                borderRadius: 8,
+                border: "1px solid #383838",
+                marginBottom: 16,
+              }}
+            >
+              <strong style={{ color: "#c8c8c8" }}>Topic:</strong> Resume review + IB recruiting timeline
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <Link href="/messages" className="btn btn--primary btn--md">Join Session</Link>
+              <Link href="/messages" className="btn btn--secondary btn--md">Message David</Link>
             </div>
           </div>
-          <div className="h-4 bg-[var(--black)] rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-[var(--neon-yellow)]"
-              initial={{ width: 0 }}
-              animate={{ width: `${profileCompletion}%` }}
-              transition={{ duration: 1, delay: 0.3 }}
-            />
+
+          {/* Active Application */}
+          <div className="card card--lg">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: "0.15em", color: "var(--text-muted)", fontWeight: 500 }}>
+                Active Application
+              </div>
+              <span className="badge badge--success">In Review</span>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: 12, color: "var(--text-subtle)", marginBottom: 4 }}>Apex Capital</div>
+              <div style={{ fontWeight: 600, color: "#c8c8c8", fontSize: 18, marginBottom: 8 }}>Wealth Management Associate</div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <span className="badge">Full-time</span>
+                <span className="badge">Chicago, IL</span>
+              </div>
+            </div>
+            <div
+              style={{
+                padding: "12px 16px",
+                background: "#0a0a0a",
+                borderRadius: 8,
+                border: "1px solid #383838",
+                marginBottom: 16,
+              }}
+            >
+              <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 8 }}>Application timeline</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 14 }}>
+                <span className="text-accent">&#9679;</span>
+                <span style={{ color: "#c8c8c8" }}>Submitted</span>
+                <span className="text-subtle">&rarr;</span>
+                <span className="text-accent">&#9679;</span>
+                <span style={{ color: "#c8c8c8" }}>In review</span>
+                <span className="text-subtle">&rarr;</span>
+                <span className="text-subtle">&#9675;</span>
+                <span className="text-subtle">Interview</span>
+              </div>
+            </div>
+            <Link href="/jobs" className="btn btn--secondary btn--md">
+              View Application &rarr;
+            </Link>
           </div>
-          {profileCompletion < 100 && (
-            <div className="mt-6 space-y-3 text-base text-[var(--text-secondary)]">
-              {!quizResults && (
-                <p>• Take the career quiz to boost your profile (+30%)</p>
-              )}
-              {savedJobsCount === 0 && (
-                <p>• Save your first job to increase completion (+15%)</p>
-              )}
-              {connectedMentorsCount === 0 && (
-                <p>• Connect with a mentor to improve your profile (+15%)</p>
-              )}
-            </div>
-          )}
-        </motion.div>
+        </div>
 
-        {/* Career Roadmap Summary */}
-        {quizResults && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-gradient-to-br from-[var(--dark-navy)] to-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-2xl p-8 mb-8"
-          >
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <span className="inline-block px-3 py-1 bg-[var(--neon-yellow)]/10 border border-[var(--neon-yellow)]/30 text-[var(--neon-yellow)] text-xs font-semibold rounded-full mb-3">
-                  YOUR CAREER PATH
-                </span>
-                <h2 className="text-3xl font-heading font-bold text-white mb-2">
-                  {quizResults.roadmap.path}
-                </h2>
-                <p className="text-[var(--text-secondary)]">
-                  Based on your {quizResults.sport} background and interests
-                </p>
-              </div>
-              <Link href="/quiz">
-                <button className="px-4 py-2 border border-[var(--neon-yellow)]/40 text-[var(--neon-yellow)] rounded-lg text-sm hover:bg-[var(--neon-yellow)]/10 transition-all">
-                  Retake Quiz
-                </button>
-              </Link>
+        {/* Recommended Jobs */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+            <div>
+              <h2 style={{ fontSize: 28, marginBottom: 4 }}>Recommended for you</h2>
+              <p className="text-muted" style={{ fontSize: 14 }}>Based on your profile, interests, and quiz results.</p>
             </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-3">
-                  YOUR STRENGTHS
-                </h3>
-                <div className="space-y-2">
-                  {quizResults.strengths.map((strength: string, i: number) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2 text-[var(--text-primary)]"
-                    >
-                      <span className="text-[var(--neon-yellow)]">✓</span>
-                      <span>{strength}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="text-[var(--neon-yellow)] font-heading font-bold text-sm tracking-wider mb-3">
-                  SUGGESTED ROLES
-                </h3>
-                <div className="space-y-2">
-                  {quizResults.roadmap.titles.map((title: string, i: number) => (
-                    <div
-                      key={i}
-                      className="flex items-center gap-2 text-[var(--text-primary)]"
-                    >
-                      <span className="text-[var(--neon-yellow)]">→</span>
-                      <span>{title}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Quick Actions */}
-        <div className="mb-20">
-          <h2 className="text-2xl font-heading font-bold text-white mb-10">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {quickActions.map((action, index) => (
-              <motion.div
-                key={action.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-              >
-                <Link href={action.href}>
-                  <div
-                    className={`h-full p-10 rounded-2xl border transition-all cursor-pointer min-h-[200px] flex flex-col items-center justify-center text-center ${
-                      action.variant === "primary"
-                        ? "bg-[var(--neon-yellow)]/10 border-[var(--neon-yellow)] hover:bg-[var(--neon-yellow)]/20"
-                        : "bg-[var(--dark-navy)]/50 border-[var(--neon-yellow)]/20 hover:border-[var(--neon-yellow)]/40"
-                    }`}
-                  >
-                    <div className="text-5xl mb-5">{action.icon}</div>
-                    <h3 className="text-2xl font-heading font-bold text-white mb-3">
-                      {action.title}
-                    </h3>
-                    <p className="text-base text-[var(--text-secondary)]">
-                      {action.description}
-                    </p>
+            <Link href="/jobs" className="text-accent" style={{ fontSize: 14 }}>Browse all &rarr;</Link>
+          </div>
+          <div className="grid grid--md-3">
+            {[
+              { company: "Apex Capital", title: "Investment Banking Analyst", match: "94%", tags: ["Full-time", "New York, NY"], posted: "2w ago", salary: "$110-135k" },
+              { company: "Bright Labs", title: "Product Marketing Associate", match: "87%", tags: ["Full-time", "Remote"], posted: "1w ago", salary: "$80-100k" },
+              { company: "Apex Capital", title: "Sales Development Rep", match: "81%", tags: ["Full-time", "Austin, TX"], posted: "11d ago", salary: "$55-70k" },
+            ].map((job) => (
+              <Link key={job.title} href="/jobs" className="card card--interactive">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: 16, marginBottom: 16 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 12, color: "var(--text-subtle)", marginBottom: 4 }}>{job.company}</div>
+                    <div style={{ fontWeight: 600, color: "#c8c8c8" }}>{job.title}</div>
                   </div>
-                </Link>
-              </motion.div>
+                  <span className="badge badge--yellow">&#9733; {job.match} match</span>
+                </div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                  {job.tags.map((tag) => (
+                    <span key={tag} className="badge">{tag}</span>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: 12,
+                    color: "var(--text-subtle)",
+                    paddingTop: 12,
+                    borderTop: "1px solid #383838",
+                  }}
+                >
+                  <span>{job.posted}</span>
+                  <span className="text-accent">{job.salary}</span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* Next Steps */}
-        {quizResults && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="bg-[var(--dark-navy)]/50 border border-[var(--neon-yellow)]/20 rounded-2xl p-8"
-          >
-            <h2 className="text-2xl font-heading font-bold text-white mb-6">
-              Your Next Steps
-            </h2>
-            <div className="space-y-4">
-              {quizResults.roadmap.steps.slice(0, 3).map((step: string, i: number) => (
-                <div key={i} className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[var(--neon-yellow)]/20 border border-[var(--neon-yellow)]/40 flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-[var(--neon-yellow)] font-bold text-sm">
-                      {i + 1}
-                    </span>
-                  </div>
-                  <p className="text-[var(--text-primary)] leading-relaxed pt-1">
-                    {step}
-                  </p>
-                </div>
-              ))}
+        {/* Suggested Mentors */}
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+            <div>
+              <h2 style={{ fontSize: 28, marginBottom: 4 }}>Suggested mentors</h2>
+              <p className="text-muted" style={{ fontSize: 14 }}>Other mentors who match your career interests.</p>
             </div>
-            <Link href="/quiz">
-              <button className="mt-6 px-6 py-3 bg-[var(--neon-yellow)] text-[var(--black)] rounded-xl font-semibold hover:shadow-lg hover:shadow-[var(--neon-yellow)]/20 transition-all">
-                View Full Roadmap
-              </button>
-            </Link>
-          </motion.div>
-        )}
-      </div>
+            <Link href="/mentors" className="text-accent" style={{ fontSize: 14 }}>Browse all &rarr;</Link>
+          </div>
+          <div className="grid grid--md-3">
+            {[
+              { initials: "SO", name: "Sarah Okonkwo", role: "Senior Brand Mgr \u00B7 Nike", rating: "4.8", status: "Accepting", statusClass: "badge--success" },
+              { initials: "RP", name: "Ryan Patel", role: "Consultant \u00B7 McKinsey", rating: "5.0", status: "Currently full", statusClass: "" },
+              { initials: "JW", name: "James Wright", role: "Founder \u00B7 PlaybookHQ", rating: "4.7", status: "Accepting", statusClass: "badge--success" },
+            ].map((mentor) => (
+              <Link key={mentor.name} href="/mentors" className="card card--interactive">
+                <div style={{ display: "flex", alignItems: "start", gap: 12, marginBottom: 12 }}>
+                  <div className="avatar avatar--md">{mentor.initials}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, color: "#c8c8c8", fontSize: 14 }}>{mentor.name}</div>
+                    <div style={{ fontSize: 12, color: "var(--text-muted)" }}>{mentor.role}</div>
+                  </div>
+                  <div style={{ fontSize: 12, color: "var(--accent)", fontWeight: 500 }}>&#9733; {mentor.rating}</div>
+                </div>
+                <span className={`badge ${mentor.statusClass}`} style={{ fontSize: 11 }}>
+                  &#9679; {mentor.status}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

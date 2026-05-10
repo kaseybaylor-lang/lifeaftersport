@@ -1,225 +1,353 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import Button from "@/components/ui/Button";
+import { Navbar, Footer } from "@/components/layout";
 import Link from "next/link";
 
-export default function RegisterPage() {
+type Role = "athlete" | "mentor" | "employer";
+
+interface RoleOption {
+  id: Role;
+  emoji: string;
+  label: string;
+  description: string;
+}
+
+const roles: RoleOption[] = [
+  {
+    id: "athlete",
+    emoji: "\u{1F3C3}",
+    label: "Student-Athlete",
+    description: "Currently competing or recently finished your sport.",
+  },
+  {
+    id: "mentor",
+    emoji: "\u{1F3AF}",
+    label: "Mentor",
+    description: "Guide athletes through their career transition.",
+  },
+  {
+    id: "employer",
+    emoji: "\u{1F4BC}",
+    label: "Employer",
+    description: "Hire driven former athletes for your team.",
+  },
+];
+
+const orgFieldLabel: Record<Role, string> = {
+  athlete: "School / University",
+  mentor: "Company / Organization",
+  employer: "Company",
+};
+
+const orgFieldPlaceholder: Record<Role, string> = {
+  athlete: "e.g., UCLA, Ohio State",
+  mentor: "e.g., Deloitte, self-employed",
+  employer: "e.g., Nike, Goldman Sachs",
+};
+
+function RegisterContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signUp } = useAuth();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    sport: "",
-    university: "",
-    graduationYear: "",
-    status: "current-athlete" as "current-athlete" | "recent-alum",
-  });
+
+  const [step, setStep] = useState<1 | 2>(1);
+  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [org, setOrg] = useState("");
+
+  // Pre-select role from URL param
+  useEffect(() => {
+    const roleParam = searchParams.get("role") as Role | null;
+    if (roleParam && ["athlete", "mentor", "employer"].includes(roleParam)) {
+      setSelectedRole(roleParam);
+      setStep(2);
+    }
+  }, [searchParams]);
+
+  const handleRoleSelect = (role: Role) => {
+    setSelectedRole(role);
+    setStep(2);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    signUp(formData);
-    router.push("/");
+    signUp({
+      name: `${firstName} ${lastName}`.trim(),
+      email,
+      password,
+      sport: "",
+      university: selectedRole === "athlete" ? org : "",
+      graduationYear: "",
+      status: "current-athlete",
+    });
+    router.push("/dashboard");
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const currentRole = roles.find((r) => r.id === selectedRole);
 
   return (
-    <div className="min-h-screen bg-[var(--black)] flex items-center justify-center px-6 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-xl"
+    <>
+      <Navbar />
+      <main
+        className="section"
+        style={{
+          paddingTop: 160,
+          display: "flex",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
       >
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/">
-            <h1 className="font-heading font-bold text-2xl text-[var(--neon-yellow)] mb-2 cursor-pointer">
-              LIFE AFTER SPORT
-            </h1>
-          </Link>
-          <p className="text-[var(--text-secondary)]">Create your account</p>
-        </div>
-
-        {/* Form Card */}
-        <div className="bg-[var(--dark-navy)] border border-[var(--neon-yellow)]/20 rounded-2xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Name & Email Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                >
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                  placeholder="Enter your full name"
-                />
+        <div style={{ width: "100%", maxWidth: 520 }}>
+          {step === 1 && (
+            <>
+              {/* Step 1: Role Selection */}
+              <div className="eyebrow">
+                <span>Step 1 of 2</span>
               </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                >
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                  placeholder="you@example.com"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+              <h1
+                style={{
+                  fontSize: 48,
+                  lineHeight: 0.95,
+                  marginBottom: 12,
+                  fontFamily: "var(--font-oswald)",
+                }}
               >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                placeholder="Create a password"
-              />
-            </div>
+                Who are you?
+              </h1>
+              <p className="text-muted" style={{ marginBottom: 40 }}>
+                Choose the role that fits you best.
+              </p>
 
-            {/* Sport & University Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label
-                  htmlFor="sport"
-                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                >
-                  Sport Played
-                </label>
-                <input
-                  type="text"
-                  id="sport"
-                  name="sport"
-                  value={formData.sport}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                  placeholder="e.g., Basketball, Soccer"
-                />
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {roles.map((role) => (
+                  <button
+                    key={role.id}
+                    type="button"
+                    onClick={() => handleRoleSelect(role.id)}
+                    className="card card--interactive"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 16,
+                      textAlign: "left",
+                      width: "100%",
+                    }}
+                  >
+                    <span style={{ fontSize: 32 }}>{role.emoji}</span>
+                    <div style={{ flex: 1 }}>
+                      <div
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 600,
+                          color: "var(--text-strong)",
+                          marginBottom: 4,
+                        }}
+                      >
+                        {role.label}
+                      </div>
+                      <div className="text-muted" style={{ fontSize: 14 }}>
+                        {role.description}
+                      </div>
+                    </div>
+                    <span className="text-subtle" style={{ fontSize: 20 }}>
+                      &rarr;
+                    </span>
+                  </button>
+                ))}
               </div>
 
-              <div>
-                <label
-                  htmlFor="university"
-                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
+              <p
+                className="text-muted"
+                style={{ textAlign: "center", marginTop: 40, fontSize: 14 }}
+              >
+                Already have an account?{" "}
+                <Link
+                  href="/signin"
+                  className="text-accent"
+                  style={{ fontWeight: 500 }}
                 >
-                  University
-                </label>
-                <input
-                  type="text"
-                  id="university"
-                  name="university"
-                  value={formData.university}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                  placeholder="e.g., UCLA, Ohio State"
-                />
-              </div>
-            </div>
+                  Sign in
+                </Link>
+              </p>
+            </>
+          )}
 
-            {/* Graduation Year & Status Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div>
-                <label
-                  htmlFor="graduationYear"
-                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                >
-                  Graduation Year
-                </label>
-                <input
-                  type="text"
-                  id="graduationYear"
-                  name="graduationYear"
-                  value={formData.graduationYear}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                  placeholder="e.g., 2025"
-                />
+          {step === 2 && selectedRole && (
+            <>
+              {/* Step 2: Registration Form */}
+              <div className="eyebrow">
+                <span>
+                  Step 2 of 2 &middot; {currentRole?.label} form
+                </span>
               </div>
 
-              <div>
-                <label
-                  htmlFor="status"
-                  className="block text-sm font-medium text-[var(--text-primary)] mb-2"
-                >
-                  Current Status
-                </label>
-                <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 bg-[var(--black)] border border-[var(--neon-yellow)]/30 rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-yellow)] transition-colors"
-                >
-                  <option value="current-athlete">Current Athlete</option>
-                  <option value="recent-alum">Recent Alum</option>
-                </select>
+              <h1
+                style={{
+                  fontSize: 48,
+                  lineHeight: 0.95,
+                  marginBottom: 12,
+                  fontFamily: "var(--font-oswald)",
+                }}
+              >
+                Create your account.
+              </h1>
+              <p className="text-muted" style={{ marginBottom: 32 }}>
+                Fill in your details to get started.
+              </p>
+
+              <div className="card card--lg">
+                <form onSubmit={handleSubmit}>
+                  {/* First + Last name */}
+                  <div className="grid grid--2" style={{ marginBottom: 20 }}>
+                    <div>
+                      <label className="field-label" htmlFor="firstName">
+                        First Name
+                      </label>
+                      <input
+                        className="input"
+                        type="text"
+                        id="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="Jane"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="field-label" htmlFor="lastName">
+                        Last Name
+                      </label>
+                      <input
+                        className="input"
+                        type="text"
+                        id="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder="Doe"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div style={{ marginBottom: 20 }}>
+                    <label className="field-label" htmlFor="email">
+                      Email
+                    </label>
+                    <input
+                      className="input"
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      required
+                    />
+                  </div>
+
+                  {/* Password */}
+                  <div style={{ marginBottom: 20 }}>
+                    <label className="field-label" htmlFor="password">
+                      Password
+                    </label>
+                    <input
+                      className="input"
+                      type="password"
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Create a password"
+                      required
+                    />
+                  </div>
+
+                  {/* School / Company field */}
+                  <div style={{ marginBottom: 24 }}>
+                    <label className="field-label" htmlFor="org">
+                      {orgFieldLabel[selectedRole]}
+                    </label>
+                    <input
+                      className="input"
+                      type="text"
+                      id="org"
+                      value={org}
+                      onChange={(e) => setOrg(e.target.value)}
+                      placeholder={orgFieldPlaceholder[selectedRole]}
+                      required
+                    />
+                  </div>
+
+                  {/* Agreement text */}
+                  <p
+                    className="text-subtle"
+                    style={{ fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}
+                  >
+                    By creating an account you agree to our{" "}
+                    <Link href="/terms" className="text-accent">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/privacy" className="text-accent">
+                      Privacy Policy
+                    </Link>
+                    .
+                  </p>
+
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    className="btn btn--primary btn--lg btn--full"
+                  >
+                    Create Account
+                  </button>
+                </form>
+
+                {/* Back to step 1 */}
+                <div style={{ textAlign: "center", marginTop: 20 }}>
+                  <button
+                    type="button"
+                    className="btn btn--ghost btn--sm"
+                    onClick={() => setStep(1)}
+                  >
+                    &larr; Change role
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* Submit Button */}
-            <div className="pt-2">
-              <Button variant="primary" className="w-full" type="submit">
-                Create Account
-              </Button>
-            </div>
-          </form>
-
-          {/* Sign In Link */}
-          <p className="text-center text-[var(--text-secondary)] mt-6">
-            Already have an account?{" "}
-            <Link
-              href="/signin"
-              className="text-[var(--neon-yellow)] hover:underline font-medium"
-            >
-              Sign In
-            </Link>
-          </p>
+              <p
+                className="text-muted"
+                style={{ textAlign: "center", marginTop: 32, fontSize: 14 }}
+              >
+                Already have an account?{" "}
+                <Link
+                  href="/signin"
+                  className="text-accent"
+                  style={{ fontWeight: 500 }}
+                >
+                  Sign in
+                </Link>
+              </p>
+            </>
+          )}
         </div>
-      </motion.div>
-    </div>
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "var(--bg)" }} />}>
+      <RegisterContent />
+    </Suspense>
   );
 }
