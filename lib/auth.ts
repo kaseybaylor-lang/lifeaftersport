@@ -40,37 +40,29 @@ export const auth = {
     return user;
   },
 
-  // Sign in existing user (demo mode: any email/password works)
+  // Sign in (demo mode: any email/password works, role determines dashboard)
   signIn: (email: string, _password: string, role?: 'student' | 'mentor' | 'employer'): User | null => {
-    const userStored = localStorage.getItem(USER_STORAGE_KEY);
-
-    if (userStored) {
-      const existing: User = JSON.parse(userStored);
-      // Update role if a different one was selected
-      if (role && existing.role !== role) {
-        existing.role = role;
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(existing));
-      }
-      return existing;
-    }
-
-    // Demo mode: create a user with the selected role
-    const roleNames: Record<string, string> = {
-      student: "Marcus Thompson",
-      mentor: "Sarah Chen",
-      employer: "David Rodriguez",
-    };
     const selectedRole = role || "student";
+
+    // Always create a fresh user for the selected role so switching works
+    const roleDefaults: Record<string, { name: string; sport: string; university: string; graduationYear: string }> = {
+      student: { name: "Marcus Thompson", sport: "Football", university: "University of Michigan", graduationYear: "2026" },
+      mentor: { name: "Sarah Chen", sport: "", university: "", graduationYear: "" },
+      employer: { name: "David Rodriguez", sport: "", university: "", graduationYear: "" },
+    };
+
+    const defaults = roleDefaults[selectedRole] || roleDefaults.student;
     const demoUser: User = {
       id: crypto.randomUUID(),
-      name: roleNames[selectedRole] || "Marcus Thompson",
+      name: defaults.name,
       email: email,
-      sport: selectedRole === "student" ? "Football" : "",
-      university: selectedRole === "student" ? "University of Michigan" : "",
-      graduationYear: selectedRole === "student" ? "2026" : "",
+      sport: defaults.sport,
+      university: defaults.university,
+      graduationYear: defaults.graduationYear,
       status: "current-athlete",
       role: selectedRole,
     };
+
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(demoUser));
     return demoUser;
   },
