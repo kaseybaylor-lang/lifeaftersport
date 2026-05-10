@@ -1,5 +1,10 @@
 import { Navbar, Footer } from "@/components/layout";
 import Link from "next/link";
+import {
+  Users, Target, Briefcase, Handshake, Wrench, Video,
+  Globe, UserPlus, CalendarDays, BookOpen, MessageSquare,
+} from "lucide-react";
+import { ReactNode } from "react";
 
 export default function Home() {
   return (
@@ -182,9 +187,9 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid--3">
-            {[
+            {([
               {
-                emoji: "\uD83C\uDFC3",
+                icon: <Users size={32} />,
                 label: "For Student-Athletes",
                 title: "Find your next play.",
                 desc: "Get matched with mentors, browse athlete-friendly jobs, and access the resources to translate your athletic career into a professional one.",
@@ -192,7 +197,7 @@ export default function Home() {
                 cta: "Sign Up as Athlete",
               },
               {
-                emoji: "\uD83C\uDFAF",
+                icon: <Target size={32} />,
                 label: "For Mentors",
                 title: "Pay it forward.",
                 desc: "Former student-athlete now in your career? Share your experience with athletes navigating the same transition you did.",
@@ -200,16 +205,16 @@ export default function Home() {
                 cta: "Become a Mentor",
               },
               {
-                emoji: "\uD83D\uDCBC",
+                icon: <Briefcase size={32} />,
                 label: "For Employers",
                 title: "Hire battle-tested talent.",
                 desc: "Reach a curated pool of college student-athletes with the discipline, teamwork, and resilience that makes them top performers.",
                 href: "/register?role=employer",
                 cta: "Post Jobs & Hire",
               },
-            ].map((path) => (
+            ] as { icon: ReactNode; label: string; title: string; desc: string; href: string; cta: string }[]).map((path) => (
               <div key={path.label} className="card card--lg" style={{ display: "flex", flexDirection: "column" }}>
-                <div style={{ fontSize: 40, marginBottom: 24 }}>{path.emoji}</div>
+                <div style={{ color: "var(--accent)", marginBottom: 24 }}>{path.icon}</div>
                 <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.2em", color: "#a1a1a1", marginBottom: 8 }}>
                   {path.label}
                 </div>
@@ -236,9 +241,9 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid--md-3">
-            {[
+            {([
               {
-                emoji: "\uD83E\uDD1D",
+                icon: <Handshake size={28} />,
                 badge: "Most Popular",
                 title: "1-on-1 Coaching & Mentorship",
                 desc: "Get matched with a mentor who's been where you are. Former athletes turned professionals guide you through career exploration.",
@@ -247,7 +252,7 @@ export default function Home() {
                 href: "/mentors",
               },
               {
-                emoji: "\uD83D\uDEE0\uFE0F",
+                icon: <Wrench size={28} />,
                 badge: "In-Person & Virtual",
                 title: "Workshops",
                 desc: "Hands-on skill-building sessions designed for athletes. From resume writing to personal branding, learn the tools you need.",
@@ -256,7 +261,7 @@ export default function Home() {
                 href: "/programs",
               },
               {
-                emoji: "\uD83C\uDFA5",
+                icon: <Video size={28} />,
                 badge: "Free Access",
                 title: "Webinars",
                 desc: "Live and on-demand sessions featuring former athletes, industry experts, and career coaches sharing insights.",
@@ -265,7 +270,7 @@ export default function Home() {
                 href: "/resources",
               },
               {
-                emoji: "\uD83C\uDF10",
+                icon: <Globe size={28} />,
                 badge: "Upcoming",
                 title: "Networking Events",
                 desc: "Connect with fellow athletes in transition, employers who value athletic backgrounds, and professionals across industries.",
@@ -274,7 +279,7 @@ export default function Home() {
                 href: "/programs",
               },
               {
-                emoji: "\uD83D\uDCBC",
+                icon: <Briefcase size={28} />,
                 badge: "Updated Weekly",
                 title: "Job Opportunities",
                 desc: "Access our curated job board featuring employers who actively seek the discipline, teamwork, and resilience that athletes bring.",
@@ -283,7 +288,7 @@ export default function Home() {
                 href: "/jobs",
               },
               {
-                emoji: "\uD83D\uDC65",
+                icon: <UserPlus size={28} />,
                 badge: "Join Free",
                 title: "Community Groups",
                 desc: "Join a community of athletes navigating the same transition. Share experiences, get advice, build lasting connections.",
@@ -291,7 +296,7 @@ export default function Home() {
                 cta: "Join Community",
                 href: "/programs",
               },
-            ].map((program) => (
+            ] as { icon: ReactNode; badge: string; title: string; desc: string; features: string[]; cta: string; href: string }[]).map((program) => (
               <Link
                 key={program.title}
                 href={program.href}
@@ -299,7 +304,7 @@ export default function Home() {
                 style={{ display: "flex", flexDirection: "column" }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", marginBottom: 20 }}>
-                  <div style={{ fontSize: 28 }}>{program.emoji}</div>
+                  <div style={{ color: "var(--accent)" }}>{program.icon}</div>
                   <span className="badge badge--yellow">{program.badge}</span>
                 </div>
                 <h3 style={{ fontSize: 22, marginBottom: 12 }}>{program.title}</h3>

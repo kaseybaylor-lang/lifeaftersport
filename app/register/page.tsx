@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navbar, Footer } from "@/components/layout";
 import Link from "next/link";
+import { Users, Target, Briefcase } from "lucide-react";
 
 type Role = "athlete" | "mentor" | "employer";
 
 interface RoleOption {
   id: Role;
-  emoji: string;
+  icon: ReactNode;
   label: string;
   description: string;
 }
@@ -18,19 +19,19 @@ interface RoleOption {
 const roles: RoleOption[] = [
   {
     id: "athlete",
-    emoji: "\u{1F3C3}",
+    icon: <Users size={28} />,
     label: "Student-Athlete",
     description: "Currently competing or recently finished your sport.",
   },
   {
     id: "mentor",
-    emoji: "\u{1F3AF}",
+    icon: <Target size={28} />,
     label: "Mentor",
     description: "Guide athletes through their career transition.",
   },
   {
     id: "employer",
-    emoji: "\u{1F4BC}",
+    icon: <Briefcase size={28} />,
     label: "Employer",
     description: "Hire driven former athletes for your team.",
   },
@@ -141,7 +142,7 @@ function RegisterContent() {
                       width: "100%",
                     }}
                   >
-                    <span style={{ fontSize: 32 }}>{role.emoji}</span>
+                    <span style={{ color: "var(--accent)" }}>{role.icon}</span>
                     <div style={{ flex: 1 }}>
                       <div
                         style={{

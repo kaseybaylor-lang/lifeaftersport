@@ -1,9 +1,13 @@
 import { Navbar, Footer } from "@/components/layout";
 import Link from "next/link";
+import {
+  Handshake, Wrench, Video, Globe, Briefcase, UserPlus,
+} from "lucide-react";
+import { ReactNode } from "react";
 
-const programs = [
+const programs: { icon: ReactNode; badge: string; title: string; description: string; features: string[]; href: string }[] = [
   {
-    emoji: "🤝",
+    icon: <Handshake size={28} />,
     badge: "Most Popular",
     title: "1-on-1 Coaching",
     description:
@@ -16,7 +20,7 @@ const programs = [
     href: "/programs",
   },
   {
-    emoji: "🛠️",
+    icon: <Wrench size={28} />,
     badge: "In-Person & Virtual",
     title: "Workshops",
     description:
@@ -29,7 +33,7 @@ const programs = [
     href: "/programs",
   },
   {
-    emoji: "🎥",
+    icon: <Video size={28} />,
     badge: "Free Access",
     title: "Webinars",
     description:
@@ -42,7 +46,7 @@ const programs = [
     href: "/programs",
   },
   {
-    emoji: "🌐",
+    icon: <Globe size={28} />,
     badge: "Upcoming",
     title: "Networking Events",
     description:
@@ -55,7 +59,7 @@ const programs = [
     href: "/programs",
   },
   {
-    emoji: "💼",
+    icon: <Briefcase size={28} />,
     badge: "Updated Weekly",
     title: "Job Opportunities",
     description:
@@ -68,7 +72,7 @@ const programs = [
     href: "/jobs",
   },
   {
-    emoji: "👥",
+    icon: <UserPlus size={28} />,
     badge: "Join Free",
     title: "Community Groups",
     description:
@@ -145,7 +149,7 @@ export default function ProgramsPage() {
             {programs.map((p) => (
               <div key={p.title} className="card card--interactive" style={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 16 }}>
-                  <span style={{ fontSize: 36 }}>{p.emoji}</span>
+                  <span style={{ color: "var(--accent)" }}>{p.icon}</span>
                   <span className="badge badge--yellow">{p.badge}</span>
                 </div>
 

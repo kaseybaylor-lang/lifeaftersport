@@ -1,17 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  LayoutDashboard, Target, Briefcase, ClipboardList, Mail, User,
+} from "lucide-react";
 
-const studentNav = [
-  { icon: "\u25A3", label: "Dashboard", href: "/dashboard", active: true },
-  { icon: "\uD83C\uDFAF", label: "My Mentors", href: "/mentors" },
-  { icon: "\uD83D\uDCBC", label: "Saved Jobs", href: "/jobs" },
-  { icon: "\uD83D\uDCCB", label: "Applications", href: "/jobs" },
-  { icon: "\u2709", label: "Messages", href: "/messages", badge: 2 },
-  { icon: "\uD83D\uDC64", label: "Profile", href: "/dashboard" },
+const studentNav: { icon: ReactNode; label: string; href: string; active?: boolean; badge?: number }[] = [
+  { icon: <LayoutDashboard size={16} />, label: "Dashboard", href: "/dashboard", active: true },
+  { icon: <Target size={16} />, label: "My Mentors", href: "/mentors" },
+  { icon: <Briefcase size={16} />, label: "Saved Jobs", href: "/jobs" },
+  { icon: <ClipboardList size={16} />, label: "Applications", href: "/jobs" },
+  { icon: <Mail size={16} />, label: "Messages", href: "/messages", badge: 2 },
+  { icon: <User size={16} />, label: "Profile", href: "/dashboard" },
 ];
 
 export default function DashboardPage() {
