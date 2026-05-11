@@ -22,7 +22,7 @@ const studentNav: NavItem[] = [
 
 const mentorNav: NavItem[] = [
   { icon: <LayoutDashboard size={16} />, label: "Dashboard", href: "/dashboard" },
-  { icon: <Users size={16} />, label: "My Mentees", href: "/mentors" },
+  { icon: <Users size={16} />, label: "My Mentees", href: "/dashboard/mentees" },
   { icon: <Calendar size={16} />, label: "Sessions", href: "/dashboard/sessions" },
   { icon: <FileText size={16} />, label: "Requests", href: "/dashboard/requests" },
   { icon: <Mail size={16} />, label: "Messages", href: "/messages", badge: 3 },
