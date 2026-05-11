@@ -27,7 +27,7 @@ export default function SignInPage() {
     e.preventDefault();
     setError("");
     const authRole = role === "athlete" ? "student" : role;
-    const success = signIn(email, password, authRole);
+    const success = signIn(email || "demo@lifeaftersport.com", password || "demo", authRole);
     if (success) {
       router.push("/dashboard");
     } else {
@@ -111,7 +111,6 @@ export default function SignInPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                required
               />
             </div>
 
@@ -126,7 +125,6 @@ export default function SignInPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                required
               />
             </div>
 
