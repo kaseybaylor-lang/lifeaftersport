@@ -62,8 +62,8 @@ function StudentDashboard({ firstName }: { firstName: string }) {
             <strong style={{ color: "#c8c8c8" }}>Topic:</strong> Resume review + IB recruiting timeline
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <Link href="/messages" className="btn btn--primary btn--md">Join Session</Link>
-            <Link href="/messages" className="btn btn--secondary btn--md">Message David</Link>
+            <Link href="/dashboard/messages" className="btn btn--primary btn--md">Join Session</Link>
+            <Link href="/dashboard/messages" className="btn btn--secondary btn--md">Message David</Link>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ function StudentDashboard({ firstName }: { firstName: string }) {
               <span className="text-subtle">&#9675;</span><span className="text-subtle">Interview</span>
             </div>
           </div>
-          <Link href="/jobs" className="btn btn--secondary btn--md">View Application &rarr;</Link>
+          <Link href="/dashboard/applications" className="btn btn--secondary btn--md">View Application &rarr;</Link>
         </div>
       </div>
 
@@ -211,8 +211,8 @@ function MentorDashboard({ firstName }: { firstName: string }) {
                 <strong style={{ color: "#c8c8c8" }}>Topic:</strong> {session.topic}
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <Link href="/messages" className="btn btn--primary btn--md">Start Session</Link>
-                <Link href="/messages" className="btn btn--secondary btn--md">Message</Link>
+                <Link href="/dashboard/messages" className="btn btn--primary btn--md">Start Session</Link>
+                <Link href="/dashboard/messages" className="btn btn--secondary btn--md">Message</Link>
               </div>
             </div>
           ))}
@@ -261,7 +261,7 @@ function EmployerDashboard({ firstName }: { firstName: string }) {
           <h1>Welcome back, {firstName}.</h1>
           <p>You have 12 new applicants across 3 active job postings.</p>
         </div>
-        <Link href="/jobs" className="btn btn--primary btn--md">Post a New Job &rarr;</Link>
+        <Link href="/dashboard/job-postings" className="btn btn--primary btn--md">Post a New Job &rarr;</Link>
       </div>
 
       <div className="grid grid--4" style={{ gap: 16, marginBottom: 32 }}>

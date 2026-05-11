@@ -41,8 +41,8 @@ export default function SessionsPage() {
                 <strong style={{ color: "#c8c8c8" }}>Topic:</strong> {session.topic}
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <Link href="/messages" className="btn btn--primary btn--md">Start Session</Link>
-                <Link href="/messages" className="btn btn--secondary btn--md">Message</Link>
+                <Link href="/dashboard/messages" className="btn btn--primary btn--md">Start Session</Link>
+                <Link href="/dashboard/messages" className="btn btn--secondary btn--md">Message</Link>
               </div>
             </div>
           ))}

@@ -13,10 +13,10 @@ type NavItem = { icon: ReactNode; label: string; href: string; badge?: number };
 
 const studentNav: NavItem[] = [
   { icon: <LayoutDashboard size={16} />, label: "Dashboard", href: "/dashboard" },
-  { icon: <Target size={16} />, label: "My Mentors", href: "/mentors" },
-  { icon: <Briefcase size={16} />, label: "Saved Jobs", href: "/jobs" },
-  { icon: <ClipboardList size={16} />, label: "Applications", href: "/jobs" },
-  { icon: <Mail size={16} />, label: "Messages", href: "/messages", badge: 2 },
+  { icon: <Target size={16} />, label: "My Mentors", href: "/dashboard/mentors" },
+  { icon: <Briefcase size={16} />, label: "Saved Jobs", href: "/dashboard/saved-jobs" },
+  { icon: <ClipboardList size={16} />, label: "Applications", href: "/dashboard/applications" },
+  { icon: <Mail size={16} />, label: "Messages", href: "/dashboard/messages", badge: 2 },
   { icon: <User size={16} />, label: "Profile", href: "/dashboard/profile" },
 ];
 
@@ -25,16 +25,16 @@ const mentorNav: NavItem[] = [
   { icon: <Users size={16} />, label: "My Mentees", href: "/dashboard/mentees" },
   { icon: <Calendar size={16} />, label: "Sessions", href: "/dashboard/sessions" },
   { icon: <FileText size={16} />, label: "Requests", href: "/dashboard/requests" },
-  { icon: <Mail size={16} />, label: "Messages", href: "/messages", badge: 3 },
+  { icon: <Mail size={16} />, label: "Messages", href: "/dashboard/messages", badge: 3 },
   { icon: <User size={16} />, label: "Profile", href: "/dashboard/profile" },
 ];
 
 const employerNav: NavItem[] = [
   { icon: <LayoutDashboard size={16} />, label: "Dashboard", href: "/dashboard" },
-  { icon: <Briefcase size={16} />, label: "Job Postings", href: "/jobs" },
+  { icon: <Briefcase size={16} />, label: "Job Postings", href: "/dashboard/job-postings" },
   { icon: <ClipboardList size={16} />, label: "Applicants", href: "/dashboard/applicants" },
   { icon: <Bookmark size={16} />, label: "Saved Athletes", href: "/dashboard/saved-athletes" },
-  { icon: <Mail size={16} />, label: "Messages", href: "/messages", badge: 1 },
+  { icon: <Mail size={16} />, label: "Messages", href: "/dashboard/messages", badge: 1 },
   { icon: <Building2 size={16} />, label: "Company Profile", href: "/dashboard/company-profile" },
 ];
 

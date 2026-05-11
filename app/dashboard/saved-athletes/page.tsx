@@ -44,7 +44,7 @@ export default function SavedAthletesPage() {
               ))}
             </div>
             <div style={{ display: "flex", gap: 8 }}>
-              <Link href="/messages" className="btn btn--primary btn--sm" style={{ flex: 1 }}>Message</Link>
+              <Link href="/dashboard/messages" className="btn btn--primary btn--sm" style={{ flex: 1 }}>Message</Link>
               <button className="btn btn--secondary btn--sm" style={{ flex: 1 }}>Remove</button>
             </div>
           </div>

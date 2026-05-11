@@ -56,7 +56,7 @@ export default function MenteesPage() {
                 <span>Next: <span style={{ color: "var(--accent)" }}>{m.nextSession}</span></span>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <Link href="/messages" className="btn btn--primary btn--sm">Message</Link>
+                <Link href="/dashboard/messages" className="btn btn--primary btn--sm">Message</Link>
                 <Link href="/dashboard/sessions" className="btn btn--secondary btn--sm">View Sessions</Link>
               </div>
             </div>

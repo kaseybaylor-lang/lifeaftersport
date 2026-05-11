@@ -21,7 +21,7 @@ export default function ApplicantsPage() {
           <h1>Applicants</h1>
           <p>Review candidates across all your job postings.</p>
         </div>
-        <Link href="/jobs" className="btn btn--primary btn--md">Post a New Job &rarr;</Link>
+        <Link href="/dashboard/job-postings" className="btn btn--primary btn--md">Post a New Job &rarr;</Link>
       </div>
 
       <div className="grid grid--4" style={{ gap: 16, marginBottom: 32 }}>
