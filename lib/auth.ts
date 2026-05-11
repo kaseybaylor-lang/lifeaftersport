@@ -42,9 +42,11 @@ export const auth = {
 
   // Sign in (demo mode: any email/password works, role determines dashboard)
   signIn: (email: string, _password: string, role?: 'student' | 'mentor' | 'employer'): User | null => {
-    const selectedRole = role || "student";
+    // Clear any existing session first
+    localStorage.removeItem(AUTH_STORAGE_KEY);
+    localStorage.removeItem(USER_STORAGE_KEY);
 
-    // Always create a fresh user for the selected role so switching works
+    const selectedRole = role || "student";
     const roleDefaults: Record<string, { name: string; sport: string; university: string; graduationYear: string }> = {
       student: { name: "Marcus Thompson", sport: "Football", university: "University of Michigan", graduationYear: "2026" },
       mentor: { name: "Sarah Chen", sport: "", university: "", graduationYear: "" },
