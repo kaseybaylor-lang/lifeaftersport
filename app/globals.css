@@ -191,6 +191,13 @@ img { max-width: 100%; display: block; }
   50% { opacity: 0.4; }
 }
 
+/* Hero two-column grid */
+@media (max-width: 767px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* Schools banner marquee */
 .schools-marquee {
   overflow: hidden;

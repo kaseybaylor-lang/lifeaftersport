@@ -1,5 +1,6 @@
 import { Navbar, Footer } from "@/components/layout";
 import SchoolsBanner from "@/components/sections/SchoolsBanner";
+import HeroSlideshow from "@/components/sections/HeroSlideshow";
 import Link from "next/link";
 import {
   Users, Target, Briefcase, Handshake, Wrench, Video,
@@ -16,39 +17,58 @@ export default function Home() {
       <section className="hero">
         <div className="hero__grid-bg" />
         <div className="hero__glow" />
-        <div style={{ position: "relative", maxWidth: 1080, margin: "0 auto" }}>
-          <h1
-            style={{
-              fontSize: 72,
-              lineHeight: 0.9,
-              marginBottom: 32,
-              color: "var(--text)",
-            }}
-            className="md:!text-[144px] lg:!text-[160px]"
-          >
-            Life<br />After<br /><span style={{ color: "var(--accent)" }}>Sport.</span>
-          </h1>
-          <p
-            style={{
-              fontSize: 18,
-              color: "var(--text)",
-              maxWidth: 560,
-              marginBottom: 40,
-              lineHeight: 1.6,
-            }}
-            className="md:!text-[20px]"
-          >
-            The career platform built for student-athletes transitioning out of
-            competitive sports. Mentorship, jobs, and community &mdash; all in one
-            place, designed by athletes for athletes.
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-            <Link href="/register?role=student" className="btn btn--primary btn--lg">
-              Start Free Trial &rarr;
-            </Link>
-            <Link href="#programs" className="btn btn--secondary btn--lg">
-              Explore the Platform
-            </Link>
+        <div
+          style={{
+            position: "relative",
+            maxWidth: 1200,
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 64,
+            alignItems: "center",
+          }}
+          className="hero-grid"
+        >
+          {/* Left: text */}
+          <div>
+            <h1
+              style={{
+                fontSize: 72,
+                lineHeight: 0.9,
+                marginBottom: 32,
+                color: "var(--text)",
+              }}
+              className="md:!text-[100px] lg:!text-[120px]"
+            >
+              Life<br />After<br /><span style={{ color: "var(--accent)" }}>Sport.</span>
+            </h1>
+            <p
+              style={{
+                fontSize: 18,
+                color: "var(--text)",
+                maxWidth: 480,
+                marginBottom: 40,
+                lineHeight: 1.6,
+              }}
+              className="md:!text-[20px]"
+            >
+              The career platform built for student-athletes transitioning out of
+              competitive sports. Mentorship, jobs, and community &mdash; all in one
+              place, designed by athletes for athletes.
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              <Link href="/register?role=student" className="btn btn--primary btn--lg">
+                Start Free Trial &rarr;
+              </Link>
+              <Link href="#programs" className="btn btn--secondary btn--lg">
+                Explore the Platform
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: image slideshow */}
+          <div>
+            <HeroSlideshow />
           </div>
         </div>
       </section>
