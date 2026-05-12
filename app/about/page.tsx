@@ -15,7 +15,7 @@ const founders = [
     role: "Chief Technology Officer",
     initials: "KB",
     photo: "/founder-kasey.jpg",
-    bio: "Kasey brings a deep understanding of the challenges athletes face when competition ends. As CTO, she architects the platform that powers Life After Sport — building the tools, systems, and infrastructure that connect athletes with mentors, jobs, and community at scale.",
+    bio: "Kasey brings a deep understanding of the challenges athletes face when competition ends. As CTO, she architects the platform that powers Life After Sport, building the tools, systems, and infrastructure that connect athletes with mentors, jobs, and community at scale.",
     linkedin: "https://www.linkedin.com/in/kasey-baylor-37114023a/",
   },
   {
@@ -23,7 +23,7 @@ const founders = [
     role: "Chief Operating Officer",
     initials: "KV",
     photo: "/founder-kenny.jpg",
-    bio: "Kenny drives the day-to-day operations that bring Life After Sport's mission to life. From partnerships to growth strategy, he ensures the platform delivers a seamless experience for every athlete navigating their transition — translating vision into execution at every stage.",
+    bio: "Kenny drives the day-to-day operations that bring Life After Sport's mission to life. From partnerships to growth strategy, he ensures the platform delivers a seamless experience for every athlete navigating their transition, translating vision into execution at every stage.",
     linkedin: "https://www.linkedin.com/in/chuongvan/",
   },
 ];
@@ -39,7 +39,7 @@ export default function AboutPage() {
           <div className="eyebrow"><span>Our Story</span></div>
           <h1>Built by athletes.<br />For athletes.</h1>
           <p style={{ maxWidth: 600 }}>
-            Life After Sport was founded by classmates with one shared goal — creating a
+            Life After Sport was founded by classmates with one shared goal: creating a
             better future for athletes beyond the game.
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function AboutPage() {
             purpose, and self-worth to sports from a young age. Throughout college athletics,
             she saw teammates struggle with uncertainty about their futures, a lack of guidance
             outside of competition, and difficulty navigating life beyond their sport. While some
-            athletes have access to strong networks and opportunities, many do not — revealing a
+            athletes have access to strong networks and opportunities, many do not, revealing a
             nationwide gap in support that often goes unspoken.
           </p>
           <p style={{ fontSize: 18, color: "#c8c8c8", lineHeight: 1.85, marginBottom: 28 }}>
@@ -71,7 +71,7 @@ export default function AboutPage() {
           </p>
           <p style={{ fontSize: 20, color: "var(--accent)", lineHeight: 1.75, fontWeight: 500, borderLeft: "3px solid var(--accent)", paddingLeft: 24 }}>
             Life After Sports exists to remind athletes that their value extends far beyond the
-            field, court, or track — and that the skills developed through sports can become the
+            field, court, or track, and that the skills developed through sports can become the
             foundation for lifelong success.
           </p>
         </div>
@@ -100,7 +100,7 @@ export default function AboutPage() {
               <h2 style={{ fontSize: 34, marginBottom: 24, lineHeight: 1.15 }}>Where We&apos;re Going</h2>
               <p style={{ fontSize: 16, color: "#c8c8c8", lineHeight: 1.8 }}>
                 We envision a future where every athlete feels prepared, supported, and inspired
-                in their transition beyond sports — recognizing that the end of a playing career
+                in their transition beyond sports, recognizing that the end of a playing career
                 is not a loss of identity, but the beginning of a new journey of purpose, impact,
                 and success.
               </p>
@@ -124,7 +124,7 @@ export default function AboutPage() {
                 className="card card--lg"
                 style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
               >
-                {/* Photo — fixed square size for all */}
+                {/* Photo - fixed square size for all */}
                 <div
                   style={{
                     width: 180,
