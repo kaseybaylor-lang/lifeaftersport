@@ -17,38 +17,6 @@ export default function Home() {
         <div className="hero__grid-bg" />
         <div className="hero__glow" />
         <div style={{ position: "relative", maxWidth: 1080, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 12px",
-              marginBottom: 32,
-              borderRadius: 999,
-              border: "1px solid #333",
-              background: "#1a1a1a",
-            }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "var(--accent)",
-                animation: "pulse 2s infinite",
-              }}
-            />
-            <span
-              style={{
-                fontSize: 11,
-                textTransform: "uppercase",
-                letterSpacing: "0.2em",
-                color: "var(--text)",
-              }}
-            >
-              Designed for college athletes nationwide
-            </span>
-          </div>
           <h1
             style={{
               fontSize: 72,
