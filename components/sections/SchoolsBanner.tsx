@@ -33,12 +33,11 @@ export default function SchoolsBanner() {
           Partnered with
         </span>
         <Image
-          src="https://cdn.brandfetch.io/iddCYAw5jG/w/200/h/200/fallback/lettermark/icon.webp?c=1ax1778632380535bfumLaCV7m0_cLCSjm"
+          src="/ncaa.png"
           alt="NCAA"
-          width={48}
-          height={48}
+          width={120}
+          height={60}
           style={{ objectFit: "contain", opacity: 0.5 }}
-          unoptimized
         />
       </div>
 
