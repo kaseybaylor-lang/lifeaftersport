@@ -6,7 +6,7 @@ const founders = [
     name: "Ella Hwang",
     role: "Chief Executive Officer",
     initials: "EH",
-    photo: null,
+    photo: "/founder-ella.jpg",
     bio: "As a Division I athlete, Ella experienced firsthand the pressure of tying identity, purpose, and self-worth to sports. Watching teammates struggle with uncertainty beyond competition became the spark behind Life After Sport. She leads the company's vision and strategy, driving the mission to bridge the gap between athletic identity and professional purpose.",
     linkedin: "https://www.linkedin.com/in/ella-hwang-408405201/",
   },
