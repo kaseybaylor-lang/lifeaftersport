@@ -1,105 +1,196 @@
 import { Navbar, Footer } from "@/components/layout";
+import Image from "next/image";
+
+const founders = [
+  {
+    name: "Ella Hwang",
+    role: "Chief Executive Officer",
+    initials: "EH",
+    photo: null,
+    bio: "As a Division I athlete, Ella experienced firsthand the pressure of tying identity, purpose, and self-worth to sports. Watching teammates struggle with uncertainty beyond competition became the spark behind Life After Sport. She leads the company's vision and strategy, driving the mission to bridge the gap between athletic identity and professional purpose.",
+    linkedin: "https://www.linkedin.com/in/ella-hwang-408405201/",
+  },
+  {
+    name: "Kasey Baylor",
+    role: "Chief Technology Officer",
+    initials: "KB",
+    photo: "/founder-kasey.jpg",
+    bio: "Kasey brings a deep understanding of the challenges athletes face when competition ends. As CTO, she architects the platform that powers Life After Sport — building the tools, systems, and infrastructure that connect athletes with mentors, jobs, and community at scale.",
+    linkedin: "https://www.linkedin.com/in/kasey-baylor-37114023a/",
+  },
+  {
+    name: "Kenny Van",
+    role: "Chief Operating Officer",
+    initials: "KV",
+    photo: "/founder-kenny.jpg",
+    bio: "Kenny drives the day-to-day operations that bring Life After Sport's mission to life. From partnerships to growth strategy, he ensures the platform delivers a seamless experience for every athlete navigating their transition — translating vision into execution at every stage.",
+    linkedin: "https://www.linkedin.com/in/chuongvan/",
+  },
+];
 
 export default function AboutPage() {
   return (
     <>
       <Navbar />
 
-      {/* PAGE HEADER */}
-      <section className="page-header">
+      {/* Page Header */}
+      <div className="page-header">
         <div className="page-header__inner">
-          <div className="eyebrow"><span>About Us</span></div>
-          <h1 style={{ fontSize: 56, marginBottom: 24 }}>
-            Built by athletes,<br />for athletes.
-          </h1>
-          <p style={{ fontSize: 18, color: "var(--text-muted)", maxWidth: 640, lineHeight: 1.6 }}>
-            Life After Sport was born from a simple observation: the transition out of
-            competitive sports is one of the hardest things an athlete will ever face.
+          <div className="eyebrow"><span>Our Story</span></div>
+          <h1>Built by athletes.<br />For athletes.</h1>
+          <p style={{ maxWidth: 600 }}>
+            Life After Sport was founded by classmates with one shared goal — creating a
+            better future for athletes beyond the game.
           </p>
         </div>
-      </section>
+      </div>
 
-      {/* OUR STORY */}
+      {/* Origin Story */}
       <section className="section">
-        <div className="container" style={{ maxWidth: 800 }}>
-          <h2 style={{ fontSize: 40, marginBottom: 32 }}>Our story</h2>
-          <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 24 }}>
-            In 2025, three former college athletes realized something that had been hiding in
-            plain sight: there was no centralized platform helping student-athletes navigate
-            the transition from competitive sport to professional life. Career centers
-            offered generic advice. Mentorship was informal and inconsistent. Job boards
-            didn&apos;t understand what made athletes different.
+        <div className="container" style={{ maxWidth: 820 }}>
+          <p style={{ fontSize: 18, color: "#c8c8c8", lineHeight: 1.85, marginBottom: 28 }}>
+            Life After Sports was founded by classmates Ella Hwang, Kasey Baylor and Kenny Van
+            with one shared goal: creating a better future for athletes beyond the game.
           </p>
-          <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 24 }}>
-            So we built Life After Sport &mdash; a platform designed from the ground up to
-            bridge that gap. We combined mentorship from former athletes who&apos;ve already
-            made the leap, a curated job board featuring employers who genuinely value
-            athletic backgrounds, and a community where athletes can share experiences and
-            support each other through the transition.
+          <p style={{ fontSize: 18, color: "#c8c8c8", lineHeight: 1.85, marginBottom: 28 }}>
+            As a Division I athlete, Ella experienced firsthand the pressure of tying identity,
+            purpose, and self-worth to sports from a young age. Throughout college athletics,
+            she saw teammates struggle with uncertainty about their futures, a lack of guidance
+            outside of competition, and difficulty navigating life beyond their sport. While some
+            athletes have access to strong networks and opportunities, many do not — revealing a
+            nationwide gap in support that often goes unspoken.
           </p>
-          <p style={{ fontSize: 16, color: "var(--text-muted)", lineHeight: 1.8 }}>
-            What started as a conversation between teammates has grown into a platform
-            serving student-athletes across the country. We&apos;re building the resource we
-            wish we&apos;d had &mdash; and we&apos;re just getting started.
+          <p style={{ fontSize: 18, color: "#c8c8c8", lineHeight: 1.85, marginBottom: 28 }}>
+            That experience became the foundation for Life After Sports. Together, the founders
+            recognized that many university career centers and athlete support systems fail to
+            fully address the unique transition athletes face when competition ends. By combining
+            Ella&apos;s lived experience as a student-athlete with Kasey and Kenny&apos;s shared
+            understanding of the issue, the team created Life After Sports to build a stronger
+            sense of community, mentorship, and direction for athletes preparing for their next
+            chapter.
+          </p>
+          <p style={{ fontSize: 20, color: "var(--accent)", lineHeight: 1.75, fontWeight: 500, borderLeft: "3px solid var(--accent)", paddingLeft: 24 }}>
+            Life After Sports exists to remind athletes that their value extends far beyond the
+            field, court, or track — and that the skills developed through sports can become the
+            foundation for lifelong success.
           </p>
         </div>
       </section>
 
-      {/* TEAM */}
-      <section className="section" style={{ borderTop: "1px solid #1f1f1f" }}>
+      {/* Mission & Vision */}
+      <section className="section" style={{ background: "#0a0a0a", borderTop: "1px solid #1a1a1a", borderBottom: "1px solid #1a1a1a" }}>
         <div className="container">
-          <div style={{ maxWidth: 640, marginBottom: 64 }}>
-            <h2 style={{ fontSize: 40, marginBottom: 16 }}>The team behind it</h2>
-            <p style={{ fontSize: 16, color: "var(--text-muted)" }}>
-              Three former athletes building the platform they wish they&apos;d had.
-            </p>
+          <div className="grid grid--2" style={{ gap: 32 }}>
+            {/* Mission */}
+            <div className="card card--lg">
+              <div className="eyebrow" style={{ marginBottom: 16 }}><span>Mission Statement</span></div>
+              <h2 style={{ fontSize: 34, marginBottom: 24, lineHeight: 1.15 }}>Why We Exist</h2>
+              <p style={{ fontSize: 16, color: "#c8c8c8", lineHeight: 1.8 }}>
+                At Life After Sports, our mission is to empower athletes to confidently navigate
+                life beyond competition by providing mentorship, career development, and a
+                supportive community that values identity beyond the game. We are committed to
+                helping athletes translate the discipline, leadership, and resilience built
+                through sports into meaningful opportunities for their future.
+              </p>
+            </div>
+
+            {/* Vision */}
+            <div className="card card--lg">
+              <div className="eyebrow" style={{ marginBottom: 16 }}><span>Vision Statement</span></div>
+              <h2 style={{ fontSize: 34, marginBottom: 24, lineHeight: 1.15 }}>Where We&apos;re Going</h2>
+              <p style={{ fontSize: 16, color: "#c8c8c8", lineHeight: 1.8 }}>
+                We envision a future where every athlete feels prepared, supported, and inspired
+                in their transition beyond sports — recognizing that the end of a playing career
+                is not a loss of identity, but the beginning of a new journey of purpose, impact,
+                and success.
+              </p>
+            </div>
           </div>
-          <div className="grid grid--3">
-            {[
-              {
-                initials: "KB",
-                name: "Kasey",
-                role: "Co-founder",
-                bio: "Former swimmer turned product builder. Kasey leads product strategy and design, drawing on years of competitive swimming to build tools that actually help athletes transition.",
-              },
-              {
-                initials: "EB",
-                name: "Ella",
-                role: "Co-founder",
-                bio: "Former soccer player and partnerships lead. Ella connects Life After Sport with universities and employers who believe in the power of athletic backgrounds.",
-              },
-              {
-                initials: "KM",
-                name: "Kenny",
-                role: "Co-founder",
-                bio: "Former track athlete and engineer. Kenny builds the platform from the ground up, bringing the same discipline from the track to the codebase.",
-              },
-            ].map((member) => (
-              <div key={member.name} className="card card--lg" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-                <div className="avatar avatar--xl" style={{ marginBottom: 24 }}>
-                  {member.initials}
+        </div>
+      </section>
+
+      {/* Founders */}
+      <section className="section">
+        <div className="container">
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div className="eyebrow" style={{ marginBottom: 16 }}><span>The Team</span></div>
+            <h2 style={{ fontSize: 48 }}>Meet the Founders</h2>
+          </div>
+
+          <div className="grid grid--md-3" style={{ gap: 32 }}>
+            {founders.map((founder) => (
+              <div
+                key={founder.name}
+                className="card card--lg"
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
+              >
+                {/* Photo — fixed square size for all */}
+                <div
+                  style={{
+                    width: 180,
+                    height: 180,
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    marginBottom: 24,
+                    border: "2px solid #2a2a2a",
+                    flexShrink: 0,
+                    position: "relative",
+                    background: "#111",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {founder.photo ? (
+                    <Image
+                      src={founder.photo}
+                      alt={founder.name}
+                      fill
+                      quality={100}
+                      style={{ objectFit: "cover", objectPosition: "center top" }}
+                    />
+                  ) : (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-oswald), Impact, sans-serif",
+                        fontSize: 48,
+                        color: "var(--accent)",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {founder.initials}
+                    </span>
+                  )}
                 </div>
-                <h3 style={{ fontSize: 22, marginBottom: 4 }}>{member.name}</h3>
-                <p style={{ fontSize: 14, color: "var(--accent)", marginBottom: 16 }}>{member.role}</p>
-                <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7 }}>{member.bio}</p>
+
+                <div style={{ fontWeight: 700, fontSize: 20, color: "#c8c8c8", marginBottom: 6 }}>
+                  {founder.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "var(--accent)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.12em",
+                    marginBottom: 20,
+                  }}
+                >
+                  {founder.role}
+                </div>
+                <p style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.75, marginBottom: 24 }}>
+                  {founder.bio}
+                </p>
+                <a
+                  href={founder.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn--secondary btn--sm"
+                  style={{ marginTop: "auto" }}
+                >
+                  LinkedIn &rarr;
+                </a>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MISSION */}
-      <section className="section" style={{ borderTop: "1px solid #1f1f1f" }}>
-        <div className="container" style={{ maxWidth: 800 }}>
-          <div className="card card--lg" style={{ textAlign: "center", padding: "64px 48px" }}>
-            <div className="eyebrow" style={{ display: "inline-flex", justifyContent: "center", marginBottom: 24 }}>
-              <span>Our Mission</span>
-            </div>
-            <p style={{ fontSize: 24, lineHeight: 1.6, color: "var(--text)" }}>
-              &ldquo;To make every athlete&apos;s transition out of sport intentional,
-              supported, and full of opportunity &mdash; so no one has to figure it out
-              alone.&rdquo;
-            </p>
           </div>
         </div>
       </section>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const navLinks = [
+  { name: "About", href: "/about" },
   { name: "Programs", href: "/programs" },
   { name: "Jobs", href: "/jobs" },
   { name: "Mentors", href: "/mentors" },
