@@ -99,4 +99,5 @@ export const schools = [
   { name: "SMU", logo: "https://cdn.brandfetch.io/idxY12EGqA/w/200/h/200/fallback/lettermark/icon.webp?c=1ax1778631954974bfumLaCV7mCmf2Rs5k" },
   { name: "University of Delaware", logo: "https://cdn.brandfetch.io/idFGnoBByr/w/200/h/200/fallback/lettermark/icon.webp?c=1ax1778631954974bfumLaCV7mCmf2Rs5k" },
   { name: "University of Louisville", logo: "https://cdn.brandfetch.io/id3FN3VTD6/w/200/h/200/fallback/lettermark/icon.webp?c=1ax1778631954974bfumLaCV7mCmf2Rs5k" },
+  { name: "University of San Francisco", logo: "https://cdn.brandfetch.io/id44KAE380/w/200/h/200/fallback/lettermark/icon.webp?c=1ax1778632324160bfumLaCV7mbJB8NGVv" },
 ];

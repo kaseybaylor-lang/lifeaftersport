@@ -5,8 +5,9 @@ import Image from "next/image";
 
 export default function SchoolsBanner() {
   // Split into two rows for a two-row marquee effect
-  const row1 = schools.slice(0, 50);
-  const row2 = schools.slice(50, 100);
+  const mid = Math.ceil(schools.length / 2);
+  const row1 = schools.slice(0, mid);
+  const row2 = schools.slice(mid);
 
   return (
     <section
