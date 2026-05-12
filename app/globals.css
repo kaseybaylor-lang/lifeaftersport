@@ -191,6 +191,47 @@ img { max-width: 100%; display: block; }
   50% { opacity: 0.4; }
 }
 
+/* Schools banner marquee */
+.schools-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.schools-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: max-content;
+}
+
+.schools-marquee__track--left {
+  animation: marquee-left 60s linear infinite;
+}
+
+.schools-marquee__track--right {
+  animation: marquee-right 60s linear infinite;
+}
+
+.schools-marquee__item {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
 /* ============================================================
    BUTTONS
    ============================================================ */

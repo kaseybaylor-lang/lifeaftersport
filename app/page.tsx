@@ -1,4 +1,5 @@
 import { Navbar, Footer } from "@/components/layout";
+import SchoolsBanner from "@/components/sections/SchoolsBanner";
 import Link from "next/link";
 import {
   Users, Target, Briefcase, Handshake, Wrench, Video,
@@ -83,6 +84,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* SCHOOLS BANNER */}
+      <SchoolsBanner />
 
       {/* PILLARS */}
       <section className="section" id="pillars">
