@@ -39,6 +39,8 @@ export default function HeroSlideshow() {
           src={img.src}
           alt={img.alt}
           fill
+          quality={100}
+          sizes="(max-width: 768px) 100vw, 50vw"
           style={{
             objectFit: "cover",
             opacity: i === current ? 1 : 0,
