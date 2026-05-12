@@ -70,17 +70,7 @@ export default function SchoolsBanner() {
                 alt={school.name}
                 width={48}
                 height={48}
-                style={{
-                  objectFit: "contain",
-                  filter: "grayscale(100%) brightness(0.7)",
-                  transition: "filter 0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLImageElement).style.filter = "grayscale(0%) brightness(1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLImageElement).style.filter = "grayscale(100%) brightness(0.7)";
-                }}
+                style={{ objectFit: "contain" }}
                 unoptimized
               />
             </div>
@@ -102,17 +92,7 @@ export default function SchoolsBanner() {
                 alt={school.name}
                 width={48}
                 height={48}
-                style={{
-                  objectFit: "contain",
-                  filter: "grayscale(100%) brightness(0.7)",
-                  transition: "filter 0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLImageElement).style.filter = "grayscale(0%) brightness(1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLImageElement).style.filter = "grayscale(100%) brightness(0.7)";
-                }}
+                style={{ objectFit: "contain" }}
                 unoptimized
               />
             </div>
