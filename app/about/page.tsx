@@ -15,7 +15,7 @@ const founders = [
     role: "Chief Technology Officer",
     initials: "KB",
     photo: "/founder-kasey.jpg",
-    photoPosition: "60% 30%",
+    photoPosition: "center 30%",
     bio: "Kasey brings a deep understanding of the challenges athletes face when competition ends. As CTO, she architects the platform that powers Life After Sport, building the tools, systems, and infrastructure that connect athletes with mentors, jobs, and community at scale.",
     linkedin: "https://www.linkedin.com/in/kasey-baylor-37114023a/",
   },
