@@ -37,7 +37,7 @@ export default function SchoolsBanner() {
           alt="NCAA"
           width={48}
           height={48}
-          style={{ objectFit: "contain" }}
+          style={{ objectFit: "contain", opacity: 0.5 }}
           unoptimized
         />
       </div>
