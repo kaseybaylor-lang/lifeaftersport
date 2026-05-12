@@ -15,6 +15,7 @@ const founders = [
     role: "Chief Technology Officer",
     initials: "KB",
     photo: "/founder-kasey.jpg",
+    photoPosition: "center 30%",
     bio: "Kasey brings a deep understanding of the challenges athletes face when competition ends. As CTO, she architects the platform that powers Life After Sport, building the tools, systems, and infrastructure that connect athletes with mentors, jobs, and community at scale.",
     linkedin: "https://www.linkedin.com/in/kasey-baylor-37114023a/",
   },
@@ -23,6 +24,7 @@ const founders = [
     role: "Chief Operating Officer",
     initials: "KV",
     photo: "/founder-kenny.jpg",
+    photoPosition: "center 30%",
     bio: "Kenny drives the day-to-day operations that bring Life After Sport's mission to life. From partnerships to growth strategy, he ensures the platform delivers a seamless experience for every athlete navigating their transition, translating vision into execution at every stage.",
     linkedin: "https://www.linkedin.com/in/chuongvan/",
   },
@@ -147,7 +149,7 @@ export default function AboutPage() {
                       alt={founder.name}
                       fill
                       quality={100}
-                      style={{ objectFit: "cover", objectPosition: "center top" }}
+                      style={{ objectFit: "cover", objectPosition: founder.photoPosition ?? "center top" }}
                     />
                   ) : (
                     <span
