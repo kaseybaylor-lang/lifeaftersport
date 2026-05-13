@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.brandfetch.io",
+        hostname: "t0.gstatic.com",
       },
     ],
   },
